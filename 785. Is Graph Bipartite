@@ -1,0 +1,70 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    bool dfs(int node,int prevColor,vii &graph,vi &color){
+        color[node]=prevColor;
+        for(auto it:graph[node]){
+            if(color[it]==-1){
+                if(dfs(it,1-prevColor,graph,color)==0) rt(0);
+            }
+            else if(prevColor==color[it]) rt(0);
+        }
+        rt(1);
+    }
+    bool bfs(int node,int prev,vii &graph,vi &color){
+        queue<int> q;
+        q.push(node);
+        color[node]=prev;
+        while(!q.empty()){
+            auto i=q.front();
+            q.pop();
+            for(auto it:graph[i]){
+                if(color[it]==-1){
+                    q.push(it);
+                    color[it]=1-color[i];
+                }
+                else if(color[it]==color[i]) rt(0);
+            }
+        }
+        rt(1);
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n=sz(graph);
+        //DFS
+        // vi color(n,-1);
+        // rep(i,0,n){
+        //     if(color[i]==-1){
+        //         if(dfs(i,0,graph,color)==0) rt(0);
+        //     }
+        // }
+        // rt(1);
+
+        //BFS
+        vi color(n,-1);
+        rep(i,0,n){
+            if(color[i]==-1){
+                if(bfs(i,0,graph,color)==0) rt(0);
+            }
+        }
+        rt(1);
+    }
+};
