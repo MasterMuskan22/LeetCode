@@ -1,0 +1,56 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+int mod=1e9+7;
+class Solution {
+public:
+    int countPaths(int n, vector<vector<int>>& roads) {
+        vector<ll> dp(n,0);
+        vector<pair<int,int>> adj[n];
+        for(auto it:roads){
+            adj[it[0]].push_back({it[1],it[2]});
+            adj[it[1]].push_back({it[0],it[2]});
+        }
+        vector<ll> time(n,1e18);
+        time[0]=0;
+        dp[0]=1;
+        priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<pair<ll,ll>>> pq;
+        pq.push({0,0});
+        while(!pq.empty()){
+            ll cost=pq.top().first;
+            int node=pq.top().second;
+            pq.pop();
+            if(time[node]<cost) continue;
+            for(auto &it:adj[node]){
+                int adjNode=it.first;
+                ll wt=it.second;
+                if(time[adjNode]>cost+wt){
+                    time[adjNode]=cost+wt;
+                    dp[adjNode]=dp[node];
+                    pq.push({cost+wt,adjNode});
+                }
+                else if(time[adjNode]==cost+wt){
+                    dp[adjNode]=(dp[adjNode]+dp[node])%mod;
+                }
+            }
+        }
+        rt(dp[n-1]);
+    }
+};
