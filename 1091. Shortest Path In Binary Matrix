@@ -1,0 +1,54 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[8]={-1,-1,0,1,1,1,0,-1};
+int dc[8]={0,1,1,1,0,-1,-1,-1};
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        //BFS
+        //TC = O(N*N*8)
+        //SC = O(N*N)+O(N*N)+O(N*N) -> dist+vis+queue
+        int n=sz(grid);
+        vii dist(n,vi(n,1e9));
+        vii vis(n,vi(n,0));
+        if(grid[0][0]==1 || grid[n-1][n-1]==1) rt(-1);
+        vis[0][0]=1;
+        dist[0][0]=1;
+        queue<pi> q;
+        q.push({0,0});
+        while(!q.empty()){
+            int r=q.front().first;
+            int c=q.front().second;
+            q.pop();
+            int dis=dist[r][c]+1;
+            rep(i,0,8){
+                int nRow=r+dr[i];
+                int nCol=c+dc[i];
+                if(nRow>=0 && nRow<n && nCol>=0 && nCol<n && !vis[nRow][nCol] && 
+                grid[nRow][nCol]==0){
+                    if(dis<dist[nRow][nCol]) dist[nRow][nCol]=dis;
+                    q.push({nRow,nCol});
+                    vis[nRow][nCol]=1;
+                }
+            }
+        }
+        if(dist[n-1][n-1]==1e9) rt(-1);
+        rt(dist[n-1][n-1]);
+    }
+};
