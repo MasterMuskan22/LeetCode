@@ -1,0 +1,44 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getProfit(int i,vi &arr,int fee,int buy,vii &dp){
+        if(i==sz(arr)) rt(0);
+        if(dp[i][buy]!=-1) rt(dp[i][buy]);
+        int take=0,notTake=0;
+        if(buy==0) notTake=max(getProfit(i+1,arr,fee,1,dp)+arr[i]-fee,getProfit(i+1,arr,fee,0,dp));
+        if(buy==1) take=max(getProfit(i+1,arr,fee,0,dp)-arr[i],getProfit(i+1,arr,fee,1,dp));
+        return dp[i][buy]=max(take,notTake);
+    }
+    int maxProfit(vector<int>& prices, int fee) {
+        // vii dp(sz(prices),vi(2,-1));
+        // return getProfit(0,prices,fee,1,dp);
+
+        vii dp(sz(prices)+1,vi(2,0));
+        for(int i=sz(prices)-1;i>=0;i--){
+            rep(buy,0,2){
+                if(buy==1) dp[i][buy]=max(dp[i+1][0]-prices[i],dp[i+1][1]);
+                else dp[i][buy]=max(dp[i+1][1]+prices[i]-fee,dp[i+1][0]);
+            }
+        }
+        rt(dp[0][1]);
+    }
+};
