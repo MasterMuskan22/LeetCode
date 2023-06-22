@@ -1,0 +1,44 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    long long minCost(vector<int>& nums, vector<int>& cost) {
+        vi arr(1e6+2,0);
+        rep(i,0,sz(nums)) arr[nums[i]]+=cost[i];
+        vll pref(1e6+2,0);
+        vll suff(1e6+2,0);
+        ll sum=0;
+        rep(i,1,1e6+2){
+            pref[i]=pref[i-1]+sum;
+            sum+=arr[i];
+        }
+        sum=0;
+        for(int i=1e6;i>=0;i--){
+            suff[i]=suff[i+1]+sum;
+            sum+=arr[i];
+        }
+        ll res=1e18;
+        rep(i,0,1e6+2){
+            res=min(res,pref[i]+suff[i]);
+        }
+        rt(res);
+    }
+};
