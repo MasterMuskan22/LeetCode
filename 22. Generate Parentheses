@@ -1,0 +1,72 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    bool isValid(string &s){
+        int open=0,close=0;
+        for(auto it:s){
+            if(it=='(') open++;
+            else close++;
+            if(close>open) rt(0);
+        }
+        rt(open==close);
+    }
+    // void getPar(int i,int j,string &s,string &t,string ans,vector<string> &res){
+    //     if(i==sz(s) && j==sz(t)){
+    //         if(isValid(ans)) res.pb(ans);
+    //         return ;
+    //     }
+    //     if(i>sz(s) || j>sz(t)) return ;
+    //     getPar(i+1,j,s,t,ans+s[i],res);
+    //     getPar(i,j+1,s,t,ans+t[j],res);
+    // }
+    void getPar(int i,int j,int n,string ans,vector<string> &res){
+        //Size of ans == 2*n means both open and close are there of n size each
+        if(sz(ans)==2*n){
+            res.pb(ans);
+            return ;
+        }
+        if(i>n || j>n) return ;
+        //If open is less than n then add open
+        if(i<n) getPar(i+1,j,n,ans+'(',res);
+        //If open exceeds close then add close
+        if(i>j) getPar(i,j+1,n,ans+')',res);
+    }
+    vector<string> generateParenthesis(int n) {
+        //TC = O(N)+O(2^N*(N))
+        //SC = O(N)+O(N)+O(N)+O(N!) -> around n!
+        // string open="";
+        // string close="";
+        // rep(i,0,n){
+        //     open.pb('(');
+        //     close.pb(')');
+        // }
+        // string ans="";
+        // vector<string> res;
+        // getPar(0,0,open,close,ans,res);
+        // cout<<sz(res);
+        // rt(res);
+
+        vector<string> res;
+        getPar(0,0,n,"",res);
+        rt(res);
+    }
+};
