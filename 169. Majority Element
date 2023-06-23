@@ -1,0 +1,38 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        srt(nums);
+        rt(nums[sz(nums)/2]);
+        //TC = O(N)+O(N)
+        //SC = O(N)
+        // int cnt=sz(nums)/2;
+        // unordered_map<int,int> mp;
+        // for(auto it:nums) mp[it]++;
+        // for(auto it:mp){
+        //     if(it.second>cnt) rt(it.first);
+        // }
+        // rt(0);
+    }
+};
