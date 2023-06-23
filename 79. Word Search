@@ -1,0 +1,72 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    // bool getAns(int i,int j,vector<vector<char>> &board,int ind,string &word,vector<vector<int>> &vis){
+    //     string ans="";
+    //     queue<pair<int,int>> q;
+    //     q.push({i,j});
+    //     while(!q.empty()){
+    //         int r=q.front().first;
+    //         int c=q.front().second;
+    //         q.pop();
+    //         // if(word[ind]==board[r][c]) ans+=board[r][c],ind++;
+    //         for(int k=0;k<4;k++){
+    //             int nRow=r+dr[k];
+    //             int nCol=c+dc[k];
+    //             if(nRow>=0 && nRow<sz(board) && nCol>=0 && nCol<sz(board[0]) && !vis[nRow][nCol] && board[nRow][nCol]==word[ind]){
+    //                 q.push({nRow,nCol});
+    //                 vis[nRow][nCol]=1;
+    //                 if(word[ind]==board[nRow][nCol]) ans+=board[nRow][nCol],ind++;
+    //             }
+    //         }
+    //     }
+    //     cout<<ans<<endl;
+    //     rt(ans==word);
+    // }
+    bool dfs(int i,int j,vector<vector<char>> &board,string &word,int len){
+        if(len==sz(word)) rt(1);
+        if(i<0 || j<0 || i>=sz(board) || j>=sz(board[0]) || board[i][j]!=word[len]) rt(0);
+        board[i][j]='@';
+        bool ans=(dfs(i-1,j,board,word,len+1) || dfs(i,j+1,board,word,len+1) || dfs(i+1,j,board,word,len+1) || dfs(i,j-1,board,word,len+1));
+        board[i][j]=word[len];
+        rt(ans);
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        //We have to do backtracking also that's why we can't apply BFS here (or any graph algos to find the word)
+        int m=sz(board);
+        int n=sz(board[0]);
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                // vector<vector<int>> vis(m,vector(n,0));
+                // if(getAns(i,j,board,0,word,vis)==1){
+                //     return 1;
+                // }
+                if(board[i][j]==word[0]){
+                    if(dfs(i,j,board,word,0)==1) rt(1);
+                }
+            }
+        }
+        return 0;
+    }
+};
