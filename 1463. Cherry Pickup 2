@@ -1,0 +1,73 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={1,1,1};
+int dc[4]={-1,0,1};
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getMax(int i,int j1,int j2,vii &grid,vector<vii> &dp){
+        if(j1<0 || j2<0 || j1>=sz(grid[0]) || j2>=sz(grid[0])) rt(-1e9);
+        if(i==sz(grid)-1){
+            if(j1!=j2) return grid[i][j1]+grid[i][j2];
+            else rt(grid[i][j1]);
+        }
+        if(dp[i][j1][j2]!=-1) rt(dp[i][j1][j2]);
+        int maxi=0;
+        rep(x,-1,2){
+            rep(y,-1,2){
+                if(j1==j2) maxi=max(maxi,grid[i][j1]+getMax(i+1,j1+x,j2+y,grid,dp));
+                else maxi=max(maxi,grid[i][j1]+grid[i][j2]+getMax(i+1,j1+x,j2+y,grid,dp));
+            }
+        }
+        return dp[i][j1][j2]=maxi;
+    }
+    int cherryPickup(vector<vector<int>>& grid) {
+        //In every step the row number will be same for both the robots
+        //Only column number will be different
+        //So 3D DP will work
+        int m=sz(grid);
+        int n=sz(grid[0]);
+        vector<vector<vector<int>>> dp(m,vector<vector<int>>(n,vector<int>(n,-1)));
+        return getMax(0,0,n-1,grid,dp);
+        // vector<vector<vector<int>>> dp(m,vector<vector<int>>(n,vector<int>(n,0)));
+        // dp[0][0][n-1]=grid[0][0]+grid[0][n-1];
+        // int res=dp[0][0][n-1];
+        // rep(i,1,m){
+        //     rep(j1,0,n){
+        //         rep(j2,0,n){
+        //             int prev=dp[i-1][j1][j2];
+        //             if(prev>=0){
+        //                 rep(x,-1,2){
+        //                     rep(y,-1,2){
+        //                         if(j1+x>=0 && j1+x<n && j2+y>=0 && j2+y<n){
+        //                             dp[i][j1+x][j2+y]=max(dp[i][j1+x][j2+y],dp[i-1][j1][j2]);
+        //                             if(j1+x!=j2+y) dp[i][j1+x][j2+y]=grid[i][j1+x]+grid[i][j2+y];
+        //                             else dp[i][j1+x][j2+y]=grid[i][j1+x];
+        //                             res=max(res,dp[i][j1+x][j2+y]);
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // rt(res);
+    }
+};
