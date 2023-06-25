@@ -1,0 +1,71 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getCount(int i,vi &arr,int finish,int fuel,vii &dp){
+        int ans=0;
+        if(fuel<0) return 0;
+        if(i==finish) ans=1;
+        else ans=0;
+        if(dp[i][fuel]!=-1) rt(dp[i][fuel]%mod);
+        rep(j,0,sz(arr)){
+            if(i!=j){
+                ans=ans+getCount(j,arr,finish,fuel-abs(arr[i]-arr[j]),dp);
+                ans%=mod;
+            }
+        }
+        rt(dp[i][fuel]=ans%mod);
+    }
+    int countRoutes(vector<int>& locations, int start, int finish, int fuel) {
+        int cnt=0;
+        int n=sz(locations);
+        vii dp(n,vi(fuel+1,-1));
+        return getCount(start,locations,finish,fuel,dp);
+
+        //Thinking it like a graph will give TLE because we can visit all the 
+        //locations any number of times. So that will lead to infinite steps
+        //in BFS. I was too dumb to think that and applied BFS :(
+        //DP will work
+        
+        // priority_queue<pi,vector<pi>,greater<>> pq;
+        // //{fuel,node}
+        // pq.push({0,start});
+        // while(!pq.empty()){
+        //     auto it=pq.top();
+        //     pq.pop();
+        //     int cost=it.first;
+        //     int node=it.second;
+        //     if(cost>fuel) break;
+        //     if(node==finish) cnt++;
+        //     rep(i,0,n){
+        //         if(i!=node){
+        //             int addCost=abs(locations[node]-locations[i]);
+        //             int adjNode=i;
+        //             pq.push({addCost+cost,adjNode});
+        //         }
+        //     }
+        // }
+        // rt(cnt);
+    }
+};
