@@ -1,0 +1,94 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    void getParent(TreeNode* &root,unordered_map<TreeNode*,TreeNode*> &mp){
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty()){
+            auto it=q.front();
+            q.pop();
+            if(it->left){
+                mp[it->left]=it;
+                q.push(it->left);
+            }
+            if(it->right){
+                mp[it->right]=it;
+                q.push(it->right);
+            }
+        }
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        vi res;
+        if(!root) rt(res);
+        //Marking the parent of each node
+        unordered_map<TreeNode*,TreeNode*> mp;
+        getParent(root,mp);
+        //Now doing BFS Traversal and finding the nodes at distance of k
+        queue<TreeNode*> q;
+        unordered_map<TreeNode*,bool> vis;
+        vis[target]=1;
+        int dis=0;
+        q.push(target);
+        while(!q.empty()){
+            int n=sz(q);
+            if(dis++==k) break;
+            //Here we have to take out all the nodes in the queue as we are doing level order
+            //tarversal, so all the nodes present in teh queue at the given moment will be
+            //at the same level of the tree.
+            rep(i,0,n){
+                auto it=q.front();
+                q.pop();
+                //Checking all the nodes at left,right as well as parent
+                if(it->left && !vis[it->left]){
+                    vis[it->left]=1;
+                    q.push(it->left);
+                }
+                if(it->right && !vis[it->right]){
+                    vis[it->right]=1;
+                    q.push(it->right);
+                }
+                if(mp[it] && !vis[mp[it]]){
+                    vis[mp[it]]=1;
+                    q.push(mp[it]);
+                }
+            }
+        }
+        while(!q.empty()){
+            auto it=q.front();
+            res.push_back(it->val);
+            q.pop();
+        }
+        rt(res);
+    }
+};
