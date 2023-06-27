@@ -1,0 +1,53 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getMax(int i,vi &nums,vi &dp){
+        if(i==sz(nums)) rt(INT_MIN);
+        if(dp[i]!=-1) rt(dp[i]);
+        int take=nums[i];
+        if(i+2<sz(nums)) take+=getMax(i+2,nums,dp);
+        int notTake=getMax(i+1,nums,dp);
+        return dp[i]=max(take,notTake);
+    }
+    int rob(vector<int>& nums) {
+        // vi dp(sz(nums),-1);
+        // rt(getMax(0,nums,dp));
+        // vi dp(sz(nums)+1,-1e9);
+        // dp[0]=0;
+        // dp[1]=nums[0];
+        // rep(i,2,sz(nums)+1){
+        //     dp[i]=max(nums[i-1]+dp[i-2],dp[i-1]);
+        // }
+        // rt(dp[sz(nums)]);
+        int prev2=0;
+        int prev1=nums[0];
+        rep(i,2,sz(nums)+1){
+            int cur=max(nums[i-1]+prev2,prev1);
+            prev2=prev1;
+            prev1=cur;
+        }
+        rt(prev1);
+    }
+};
