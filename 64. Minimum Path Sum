@@ -1,0 +1,59 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getSum(int i,int j,vii &grid,vii &dp){
+        if(i<0 || j<0) rt(1e9);
+        if(i==0 && j==0) rt(dp[0][0]=grid[0][0]);
+        if(dp[i][j]!=-1) rt(dp[i][j]);
+        int up=grid[i][j]+getSum(i-1,j,grid,dp);
+        int left=grid[i][j]+getSum(i,j-1,grid,dp);
+        rt(dp[i][j]=min(up,left));
+    }
+    int minPathSum(vector<vector<int>>& grid) {
+        // vii dp(sz(grid),vi(sz(grid[0]),-1));
+        // rt(getSum(sz(grid)-1,sz(grid[0])-1,grid,dp));
+        int m=sz(grid);
+        int n=sz(grid[0]);
+        // vii dp(m+1,vi(n+1,1e9));
+        // dp[0][1]=0;
+        // rep(i,1,m+1){
+        //     rep(j,1,n+1){
+        //         dp[i][j]=grid[i-1][j-1]+min(dp[i-1][j],dp[i][j-1]);
+        //     }
+        // }
+        // rt(dp[m][n]);
+        vi prev(m,grid[0][0]);
+        vi cur(m,0);
+        rep(i,1,m) prev[i]=prev[i-1]+grid[i][0];
+        rep(j,1,n){
+            cur[0]=prev[0]+grid[0][j];
+            rep(i,1,m){
+                cur[i]=grid[i][j]+min(prev[i],cur[i-1]);
+            }
+            prev=cur;
+        }
+        rt(prev[m-1]);
+    }
+};
