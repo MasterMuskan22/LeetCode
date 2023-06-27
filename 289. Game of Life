@@ -1,0 +1,60 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        //2 -> Live again
+        //3 -> dead again
+        int dr[8]={-1,-1,-1,0,0,1,1,1};
+        int dc[8]={-1,0,1,-1,1,-1,0,1};
+        rep(i,0,sz(board)){
+            rep(j,0,sz(board[0])){
+                if(board[i][j]==0){
+                    int one=0;
+                    rep(k,0,8){
+                        int nRow=i+dr[k];
+                        int nCol=j+dc[k];
+                        if(nRow>=0 && nRow<sz(board) && nCol>=0 && nCol<sz(board[0]) && 
+                        (board[nRow][nCol]==1 || board[nRow][nCol]==3)) one++;
+                    }
+                    if(one==3) board[i][j]=2;
+                }
+                else{
+                    int one=0;
+                    rep(k,0,8){
+                        int nRow=i+dr[k];
+                        int nCol=j+dc[k];
+                        if(nRow>=0 && nRow<sz(board) && nCol>=0 && nCol<sz(board[0]) && 
+                        (board[nRow][nCol]==1 || board[nRow][nCol]==3)) one++;
+                    }
+                    if(one<2 || one>3) board[i][j]=3;
+                }
+            }
+        }
+        rep(i,0,sz(board)){
+            rep(j,0,sz(board[0])){
+                if(board[i][j]==2) board[i][j]=1;
+                if(board[i][j]==3) board[i][j]=0;
+            }
+        }
+    }
+};
