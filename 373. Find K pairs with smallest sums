@@ -1,0 +1,54 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+#define pii pair<int,pair<int,int>>
+class Solution {
+public:
+    vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+        //TC = O(nlogn)
+        //SC = O(n)
+        priority_queue<pii> pq;
+        int i=0;
+        while(i<sz(nums1)){
+            int j=0;
+            while(j<sz(nums2)){
+                if(sz(pq)==k && pq.top().first<nums1[i]+nums2[j]) break;
+                if(sz(pq)<k) pq.push({nums1[i]+nums2[j],{nums1[i],nums2[j]}});
+                else if(nums1[i]+nums2[j]<pq.top().first){
+                    pq.pop();
+                    pq.push({nums1[i]+nums2[j],{nums1[i],nums2[j]}});
+                }
+                j++;
+            }
+            i++;
+        }
+        vii res;
+        while(!pq.empty()){
+            auto it=pq.top();
+            pq.pop();
+            vi v={it.second.first,it.second.second};
+            res.pb(v);
+        }
+        rt(res);
+    }
+};
