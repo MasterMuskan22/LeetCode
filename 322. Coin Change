@@ -1,0 +1,44 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getCount(int i,vi &coins,int sum,vii &dp){
+        if(i<0) rt(1e9);
+        if(i==0){
+            if(sum%coins[i]==0) rt(sum/coins[i]);
+            else rt(1e9);
+        }
+        if(dp[i][sum]!=-1) rt(dp[i][sum]);
+        int take=1e9;
+        if(sum>=coins[i]) take=1+getCount(i,coins,sum-coins[i],dp);
+        int notTake=getCount(i-1,coins,sum,dp);
+        return dp[i][sum]=min(take,notTake);
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        vii dp(sz(coins),vi(amount+1,-1));
+        int res=getCount(sz(coins)-1,coins,amount,dp);
+        if(res<1e9) rt(res);
+        rt(-1);
+    }
+};
