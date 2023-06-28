@@ -1,0 +1,56 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start, int end) {
+        vector<pair<int,double>> adj[n];
+        rep(i,0,sz(edges)){
+            vi v=edges[i];
+            adj[v[0]].push_back({v[1],succProb[i]});
+            adj[v[1]].push_back({v[0],succProb[i]});
+        }
+        vi vis(n,0);
+        priority_queue<pair<double,int>> pq;
+        pq.push({(double)1.0,start});
+        vector<double> dist(n,(double)0.0);
+        dist[start]=1.0;
+        while(!pq.empty()){
+            int node=pq.top().second;
+            double prob=pq.top().first;
+            pq.pop();
+            if(!vis[node]){
+                vis[node]=1;
+                for(auto &it:adj[node]){
+                    int adjNode=it.first;
+                    double nProb=it.second;
+                    if(prob*nProb>dist[adjNode]){
+                        dist[adjNode]=prob*nProb;
+                        pq.push({dist[adjNode],adjNode});
+                    }
+                }
+            }
+        }
+        rt(dist[end]);
+    }
+};
