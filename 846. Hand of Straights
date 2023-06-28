@@ -1,0 +1,51 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        if(sz(hand)%groupSize) rt(0);
+        //Store the count of each element
+        unordered_map<int,int> mp;
+        for(auto it:hand) mp[it]++;
+        //PQ will store only the element one time uniquely
+        priority_queue<int,vi,greater<>> pq;
+        for(auto it:mp) pq.push(it.first);
+        //Start traversing from top elem of min heap to the groupsize we need
+        //if we dont find the next element in mp then false otherwise add the elm
+        //and decrement the count. If count becomes zero then check if the elem is not the
+        //top of pq it means that the element is not consecutive, so return false
+        while(!pq.empty()){
+            int mini=pq.top();
+            for(int i=mini;i<mini+groupSize;i++){
+                if(mp.find(i)==mp.end()) rt(0);
+                else mp[i]--;
+                if(mp[i]==0){
+                    if(i!=pq.top()) rt(0);
+                    else pq.pop();
+                }
+            }
+        }
+        rt(1);
+    }
+};
