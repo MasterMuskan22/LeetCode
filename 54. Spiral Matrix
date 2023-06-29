@@ -1,0 +1,57 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vi res;
+        int m=sz(matrix);
+        int n=sz(matrix[0]);
+        int up=0,down=m-1,left=0,right=n-1;
+        int tot=m*n;
+        int cnt=0;
+        while(cnt<tot){
+            for(int j=left;cnt<tot && j<=right;j++){
+                res.pb(matrix[up][j]);
+                cnt++;
+            }
+            up++;
+            for(int i=up;cnt<tot && i<=down;i++){
+                res.pb(matrix[i][right]);
+                cnt++;
+            }
+            right--;
+            for(int j=right;cnt<tot && j>=left;j--){
+                res.pb(matrix[down][j]);
+                cnt++;
+            }
+            down--;
+            for(int i=down;cnt<tot && i>=up;i--){
+                res.pb(matrix[i][left]);
+                cnt++;
+            }
+            left++;
+        }
+        rt(res);
+    }
+};
