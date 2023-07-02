@@ -1,0 +1,67 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    static bool comp(vi &a,vi &b){
+        if(a[1]<b[1]) rt(1);
+        rt(0);
+    }
+    int findLongestChain(vector<vector<int>>& pairs) {
+        sort(pairs.begin(),pairs.end(),comp);
+        //TC = O(NlogN)+O(N)
+        //SC = O(1)
+        // int len=1;
+        // int start=pairs[0][0];
+        // int end=pairs[0][1];
+        // rep(i,1,sz(pairs)){
+        //     if(pairs[i][0]>end){
+        //         len++;
+        //         end=max(end,pairs[i][1]);
+        //     }
+        //     else continue;
+        // }
+        // rt(len);
+
+        //TC = O(NlogN)+O(N*N)
+        //SC = O(N)
+        // vi dp(sz(pairs),1);
+        // int maxi=1;
+        // rep(i,0,sz(pairs)){
+        //     rep(j,0,i){
+        //         if(pairs[i][0]>pairs[j][1]){
+        //             dp[i]=max(dp[i],1+dp[j]);
+        //         }
+        //         maxi=max(maxi,dp[i]);
+        //     }
+        // }
+        // rt(maxi);
+
+        vii arr;
+        arr.pb(pairs[0]);
+        rep(i,1,sz(pairs)){
+            if(pairs[i][0]>arr.back()[1]) arr.push_back(pairs[i]);
+        }
+        rt(sz(arr));
+    }
+};
