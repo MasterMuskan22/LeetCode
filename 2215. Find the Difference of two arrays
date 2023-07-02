@@ -1,0 +1,49 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    vector<vector<int>> findDifference(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int,int> mp1;
+        for(auto it:nums1) mp1[it]++;
+        unordered_map<int,int> mp2;
+        for(auto it:nums2) mp2[it]++;
+        vii res;
+        for(auto it:nums2){
+            if(mp1.find(it)!=mp1.end()){
+                mp1.erase(it);
+            }
+        }
+        for(auto it:nums1){
+            if(mp2.find(it)!=mp2.end()){
+                mp2.erase(it);
+            }
+        }
+        vi v1,v2;
+        for(auto it:mp1) v1.pb(it.first);
+        for(auto it:mp2) v2.pb(it.first);
+        res.pb(v1);
+        res.pb(v2);
+        rt(res);
+    }
+};
