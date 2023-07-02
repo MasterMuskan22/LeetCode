@@ -1,0 +1,74 @@
+/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
+that with a sweet smile on the face.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getMax(int i,int prev,vi &nums,vii &dp){
+        if(i>=sz(nums)) rt(0);
+        if(dp[i][prev+1]!=-1) rt(dp[i][prev+1]);
+        int len=0+getMax(i+1,prev,nums,dp);
+        if(prev==-1 || nums[i]>nums[prev]){
+            len=max(len,1+getMax(i+1,i,nums,dp));
+        }
+        return dp[i][prev+1]=len;
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        //TC = O(N*N)
+        //SC = O(N*N)+O(N)
+        // vii dp(sz(nums),vi(sz(nums)+1,-1));
+        // return getMax(0,-1,nums,dp);
+
+        //TC = O(N*N)
+        //SC = O(N)
+        // vi dp(sz(nums),1);
+        // int maxi=1; // 1 for the case of single element
+        // rep(i,0,sz(nums)){
+        //     rep(j,0,i){
+        //         if(nums[i]>nums[j]){
+        //             dp[i]=max(dp[i],1+dp[j]);
+        //         }
+        //         maxi=max(maxi,dp[i]);
+        //     }
+        // }
+        // rt(maxi);
+
+        //Using Binary Search.
+        //If the number is greater than the last inserted element in array than push it
+        //otherwise find the position in the array(it will be sorted so we can apply BS)
+        //and insert it there.
+        //By BS we wont be able to backtrack and find the subsequences but it will definitely
+        //provide the greatest length
+        //TC = O(NlogN)
+        //SC = O(N)
+        vi arr;
+        arr.pb(nums[0]);
+        rep(i,1,sz(nums)){
+            if(nums[i]>arr.back()) arr.pb(nums[i]);
+            else{
+                int ind=lower_bound(arr.begin(),arr.end(),nums[i])-arr.begin();
+                arr[ind]=nums[i];
+            }
+        }
+        rt(sz(arr));
+    }
+};
