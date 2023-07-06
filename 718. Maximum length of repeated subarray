@@ -1,0 +1,58 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getLen(int i,int j,vi &nums1,vi &nums2,vii &dp,int &ans){
+        if(i>=sz(nums1) || j>=sz(nums2)) return 0;
+        if(dp[i][j]!=-1) rt(dp[i][j]);
+        getLen(i+1,j,nums1,nums2,dp,ans);
+        getLen(i,j+1,nums1,nums2,dp,ans);
+        if(nums1[i]==nums2[j]) dp[i][j]=1+getLen(i+1,j+1,nums1,nums2,dp,ans);
+        else dp[i][j]=0;
+        ans=max(ans,dp[i][j]);
+        return dp[i][j];
+    }
+    int findLength(vector<int>& nums1, vector<int>& nums2) {
+        // vii dp(sz(nums1),vi(sz(nums2),-1));
+        // int ans=0;
+        // getLen(0,0,nums1,nums2,dp,ans);
+        // rt(ans);
+        vii dp(sz(nums1)+1,vi(sz(nums2)+1,0));
+        rep(i,1,sz(nums1)+1){
+            rep(j,1,sz(nums2)+1){
+                if(nums1[i-1]==nums2[j-1]) dp[i][j]=1+dp[i-1][j-1];
+                else dp[i][j]=0;
+            }
+        }
+        int res=0;
+        rep(i,0,sz(nums1)+1){
+            rep(j,0,sz(nums2)+1){
+                res=max(res,dp[i][j]);
+            }
+        }
+        rt(res);
+    }
+};
