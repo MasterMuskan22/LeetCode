@@ -1,0 +1,95 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    bool canPlace(int i,int j,vs ans,int n){
+        //TC = O(N)+O(N)+O(N)
+        int tempRow=i,tempCol=j;
+        while(i>=0 && j>=0){
+            if(ans[i][j]=='Q') rt(0);
+            i--,j--;
+        }
+        i=tempRow,j=tempCol;
+        while(j>=0){
+            if(ans[i][j]=='Q') rt(0);
+            j--;
+        }
+        i=tempRow,j=tempCol;
+        while(i<n && j>=0){
+            if(ans[i][j]=='Q') rt(0);
+            i++,j--;
+        }
+        rt(1);
+    }
+    void getQueens(int j,int n,vs ans,vss &res){
+        //TC = O(2^N * N*3N)
+        if(j==n){
+            res.pb(ans);
+            return ;
+        }
+        rep(i,0,n){
+            if(canPlace(i,j,ans,n)){
+                ans[i][j]='Q';
+                getQueens(j+1,n,ans,res);
+                ans[i][j]='.';
+            }
+        }
+    }
+    void getAns(int j,int n,vi &upDg,vi &leftDg,vi &lowDg,vs ans,vss &res){
+        if(j==n){
+            res.pb(ans);
+            return ;
+        }
+        rep(i,0,n){
+
+            if(upDg[i+j]==0 && leftDg[i]==0 && lowDg[n-1+j-i]==0){
+                upDg[i+j]=1;
+                leftDg[i]=1;
+                lowDg[n-1+j-i]=1;
+                ans[i][j]='Q';
+                getAns(j+1,n,upDg,leftDg,lowDg,ans,res);
+                ans[i][j]='.';
+                upDg[i+j]=0;
+                leftDg[i]=0;
+                lowDg[n-1+j-i]=0;
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vss res;
+        vs ans(n);
+        string s(n,'.');
+        rep(i,0,n){
+            ans[i]=s;
+        }
+        //getQueens(0,n,ans,res);
+        vi leftDg(n,0);
+        vi upDg(2*n-1,0);
+        vi lowDg(2*n-1,0);
+        getAns(0,n,upDg,leftDg,lowDg,ans,res);
+        rt(res);
+    }
+};
