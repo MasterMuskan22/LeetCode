@@ -1,0 +1,66 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    //Intuition: We are starting from the startGene and will traverse through the bank array
+    //and will check if the startGene and bank[i] have a difference of two chars then we can
+    //consider that strung as our startGene for next recursion call. So to nore about which
+    //string we have taken into consideration, keep visited array. If the string is not
+    //visited then take that and mark vis = 1 and the most important part, make vis = 0
+    //after the call as maybe in next iteration we can take that if that didn't give the
+    //minimum ans in current call......
+
+    //Did this question after thinking and coding for 2 hours and also after
+    //4 wrong submissions. Wohhhhhhhhhh..... 
+
+    bool isValid(string &s,string &t){
+        int cnt=0;
+        rep(i,0,sz(s)){
+            if(s[i]!=t[i]) cnt++;
+        }
+        rt(cnt==1);
+    }
+    int getCount(string &startGene,string &endGene,vs &bank,vi &vis){
+        if(startGene==endGene){
+            return 0;
+        }
+        int ans=1e9;
+        rep(i,0,sz(bank)){
+            if(vis[i]==1) continue;
+            if(isValid(startGene,bank[i])){
+                vis[i]=1;
+                ans=min(ans,1+getCount(bank[i],endGene,bank,vis));
+                vis[i]=0;
+            }
+        }
+        return ans;
+    }
+    int minMutation(string startGene, string endGene, vector<string>& bank) {
+        vi vis(sz(bank),0);
+        int res=getCount(startGene,endGene,bank,vis);
+        return res==1e9?-1:res;
+    }
+};
