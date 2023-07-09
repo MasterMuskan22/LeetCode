@@ -1,0 +1,59 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    bool isPow(string s){
+        if(s[0]=='0') rt(0);
+        ll num=0;
+        for(int i=0;i<sz(s);i++){
+            num*=2;
+            num+=(s[i]-'0');
+        }
+        ll temp=1;
+        while(temp<=num){
+            if(temp==num) rt(1);
+            temp*=5;
+        }
+        rt(0);
+    }
+    int getCount(string s){
+        if(sz(s)==0) rt(0);
+        int res=20;
+        rep(i,0,sz(s)){
+            string prev=s.substr(0,i+1);
+            if(isPow(prev)){
+                string suff=s.substr(i+1);
+                res=min(res,1+getCount(suff));
+            }
+        }
+        return res;
+    }
+    int minimumBeautifulSubstrings(string s) {
+        if(s[0]=='0') rt(-1);
+        int res=getCount(s);
+        return res<=15?res:-1;
+    }
+};
