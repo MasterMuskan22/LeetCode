@@ -1,0 +1,46 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int maximumJumps(vector<int>& nums, int target) {
+        //Greedy will not work because :
+        //Let target=3
+        //arr[]={10,7,6,9,13,17}
+        //Here if we will greedily move then from 9 to 13 we can't go but if we move from
+        //10 to 13 directly then we can easily reach the end
+        //So apply DP and find for each index how many max steps it takes to reach there
+        //TC = O(N*N)
+        //SC = O(1)
+        vi dp(sz(nums),-1); 
+        dp[0]=0;
+        rep(i,1,sz(nums)){
+            rep(j,0,i){
+                if(abs(nums[j]-nums[i])<=target && dp[j]!=-1) dp[i]=max(dp[i],1+dp[j]);
+            }
+        }
+        rt(dp[sz(nums)-1]);
+    }
+};
