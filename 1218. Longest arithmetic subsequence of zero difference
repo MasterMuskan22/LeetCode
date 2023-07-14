@@ -1,0 +1,58 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getInd(int ind,vi &arr){
+        int start=0,end=sz(arr)-1;
+        int res=-1;
+        while(start<=end){
+            int mid=start+(end-start)/2;
+            if(ind>arr[mid]){
+                res=arr[mid];
+                start=mid+1;
+            }
+            else end=mid-1;
+        }
+        rt(res);
+    }
+    int longestSubsequence(vector<int>& arr, int difference) {
+        map<int,vi> mp;
+        rep(i,0,sz(arr)){
+            mp[arr[i]].push_back(i);
+        }
+        vi dp(sz(arr),1);
+        rep(i,0,sz(arr)){
+            int cur=arr[i];
+            int prev=arr[i]-difference;
+            if(mp.find(prev)!=mp.end()){
+                // int prev_ind=lower_bound(mp[prev].begin(),mp[prev].end(),i)-mp[prev].begin();
+                int prev_ind=getInd(i,mp[prev]);
+                if(prev_ind!=-1) dp[i]=max(dp[i],dp[prev_ind]+1);
+            }
+        }
+        return *max_element(dp.begin(),dp.end());
+    }
+};
