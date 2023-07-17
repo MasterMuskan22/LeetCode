@@ -1,0 +1,52 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<pi> adj[n];
+        for(auto it:flights) adj[it[0]].push_back({it[1],it[2]});
+        vi price(n,1e9);
+        price[src]=0;
+        queue<pair<int,pi>> q;
+        q.push({0,{src,0}});
+        while(!q.empty()){
+            int stops=q.front().first;
+            int node=q.front().second.first;
+            int cost=q.front().second.second;
+            q.pop();
+            if(stops>k) break;
+            for(auto it:adj[node]){
+                int adjNode=it.first;
+                int edgWt=it.second;
+                if(price[adjNode]>cost+edgWt){
+                    price[adjNode]=cost+edgWt;
+                    q.push({stops+1,{adjNode,cost+edgWt}});
+                }
+            }
+        }
+        return price[dst]==1e9?-1:price[dst];
+    }
+};
