@@ -1,0 +1,41 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        int len=sz(word1)+sz(word2);
+        vi prev(sz(word2)+1,0);
+        vi cur(sz(word2)+1,0);
+        rep(i,1,sz(word1)+1){
+            rep(j,1,sz(word2)+1){
+                if(word1[i-1]==word2[j-1]) cur[j]=1+prev[j-1];
+                else cur[j]=max(prev[j],cur[j-1]);
+            }
+            prev=cur;
+        }
+        rt(len-2*prev[sz(word2)]);
+    }
+};
