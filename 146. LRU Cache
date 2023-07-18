@@ -1,0 +1,97 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class LRUCache {
+public:
+    class node{
+        public:
+            int key;
+            int value;
+            node* next;
+            node* prev;
+            node(int newKey,int newVal){
+                key=newKey;
+                value=newVal;
+            }
+    };
+    node* head=new node(-1,-1);
+    node* tail=new node(-1,-1);
+    int cap;
+    unordered_map<int,node*> mp;
+    LRUCache(int capacity) {
+        cap=capacity;
+        head->next=tail;
+        tail->prev=head;
+    }
+    
+    void addnode(node* root){
+        node* temp=head->next;
+        root->next=temp;
+        head->next=root;
+        temp->prev=root;
+        root->prev=head;
+    }
+
+    void deletenode(node* root){
+        node* nodeprev=root->prev;
+        node* nodenext=root->next;
+        nodeprev->next=nodenext;
+        nodenext->prev=nodeprev;
+    }
+
+    int get(int newkey) {
+        if(mp.find(newkey)!=mp.end()){
+            node* root=mp[newkey];
+            int nodeval=root->value; 
+            mp.erase(newkey);
+            deletenode(root);
+            addnode(root);
+            mp[newkey]=head->next;
+            return nodeval;
+        }
+        return -1;
+    }
+    
+    void put(int newkey, int val) {
+        if(mp.find(newkey)!=mp.end()){
+            node* root=mp[newkey];
+            mp.erase(newkey);
+            deletenode(root);
+        }
+        if(mp.size()==cap){
+            mp.erase(tail->prev->key);
+            deletenode(tail->prev);
+        }
+        addnode(new node(newkey,val));
+        mp[newkey]=head->next;
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
