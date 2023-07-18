@@ -1,0 +1,67 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getSum(int i,int j,string &s1,string &s2,vii &dp){
+        if(i>=sz(s1) || j>=sz(s2)) return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        if(s1[i]==s2[j]) return dp[i][j]=(int)s1[i]+getSum(i+1,j+1,s1,s2,dp);
+        return dp[i][j]=max(getSum(i+1,j,s1,s2,dp),getSum(i,j+1,s1,s2,dp));
+    }
+    int minimumDeleteSum(string s1, string s2) {
+        int m=sz(s1);
+        int n=sz(s2);
+        // vii dp(m,vi(n,-1));
+        // int totsum=0;
+        // for(auto it:s1) totsum+=it;
+        // for(auto it:s2) totsum+=it;
+        // return totsum-2*getSum(0,0,s1,s2,dp);
+        // vii dp(m+1,vi(n+1,0));
+        // int sum=0;
+        // for(auto it:s1) sum+=it;
+        // for(auto it:s2) sum+=it;
+        // rep(i,1,m+1){
+        //     rep(j,1,n+1){
+        //         if(s1[i-1]==s2[j-1]) dp[i][j]=s1[i-1]+dp[i-1][j-1];
+        //         else dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+        //     }
+        // }
+        // return sum-2*dp[m][n];
+        int sum=0;
+        for(auto it:s1) sum+=it;
+        for(auto it:s2) sum+=it;
+        vi cur(n+1,0);
+        vi prev(n+1,0);
+        rep(i,1,m+1){
+            rep(j,1,n+1){
+                if(s1[i-1]==s2[j-1]) cur[j]=s1[i-1]+prev[j-1];
+                else cur[j]=max(prev[j],cur[j-1]);
+            }
+            prev=cur;
+        }
+        rt(sum-2*prev[n]);
+    }
+};
