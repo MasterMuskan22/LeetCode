@@ -1,0 +1,57 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getCount(vi &nums,int goal){
+        if(goal<0) rt(0);
+        int res=0;
+        ll sum=0;
+        int i=0,j=0;
+        while(j<sz(nums)){
+            sum+=nums[j];
+            j++;
+            while(sum>goal){
+                sum-=nums[i];
+                i++;
+            }
+            res+=j-i;
+        }
+        rt(res);
+    }
+    int numSubarraysWithSum(vector<int>& nums, int goal) {
+        // return getCount(nums,goal)-getCount(nums,goal-1);
+        unordered_map<int,int> mp;
+        int sum=0;
+        int res=0;
+        mp[sum]++; 
+        for(auto it:nums){
+            sum+=it;
+            if(mp.find(sum-goal)!=mp.end()) res+=mp[sum-goal];
+            mp[sum]++; 
+        }
+        rt(res);
+    }
+};
