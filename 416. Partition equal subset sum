@@ -1,0 +1,77 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    bool getSum(int i,int sum,vi &nums,vii &dp){
+        if(i>=sz(nums)) rt(0);
+        if(i==sz(nums)-1){
+            if(sum==0 || sum==nums[i]) rt(1);
+            else rt(0);
+        }
+        if(dp[i][sum]!=-1) rt(dp[i][sum]);
+        bool take=0;
+        if(sum>=nums[i]) take=getSum(i+1,sum-nums[i],nums,dp);
+        bool notTake=getSum(i+1,sum,nums,dp);
+        return dp[i][sum]=take|notTake;
+    }
+    bool canPartition(vector<int>& nums) {
+        int sum=accumulate(nums.begin(),nums.end(),0);
+        if(sum%2) rt(0);
+        // sum/=2;
+        // int n=sz(nums);
+        // vii dp(n,vi(sum+1,-1));
+        // rt(getSum(0,sum,nums,dp));
+        int n=sz(nums);
+        // vii dp(n,vi(sum+1,0));
+        // sum/=2;
+        // rep(i,0,sz(nums)) dp[i][0]=1;
+        // dp[0][nums[0]]=1;
+        // rep(i,1,n){
+        //     rep(j,1,sum+1){
+        //         bool notTake=dp[i-1][j];
+        //         bool take=0;
+        //         if(j>=nums[i]) take=dp[i-1][j-nums[i]];
+        //         dp[i][j]=take|notTake;
+        //     }
+        // }
+        // rt(dp[n-1][sum]);
+        vi prev(sum+1,0);
+        vi cur(sum+1,0);
+        sum/=2;
+        cur[0]=1;
+        prev[nums[0]]=1;
+        rep(i,1,n){
+            rep(j,1,sum+1){
+                bool notTake=prev[j];
+                bool take=0;
+                if(j>=nums[i]) take=prev[j-nums[i]];
+                cur[j]=take|notTake;
+            }
+            prev=cur;
+        }
+        rt(prev[sum]);
+    }
+};
