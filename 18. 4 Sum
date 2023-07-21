@@ -1,0 +1,52 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        srt(nums);
+        vii res;
+        rep(i,0,sz(nums)){
+            rep(j,i+1,sz(nums)){
+                ll k=j+1,l=sz(nums)-1;
+                ll sum=target-(ll)(nums[i]+nums[j]);
+                while(k<l){
+                    ll cur=nums[k]+nums[l];
+                    if(cur==sum){
+                        res.push_back({nums[i],nums[j],nums[k],nums[l]});
+                        k++,l--;
+                        while(k<l && nums[k]==nums[k-1]) k++;
+                        while(k<l && nums[l]==nums[l+1]) l--;
+                    }
+                    else if(cur>sum) l--;
+                    else k++;
+                }
+                while(j+1<sz(nums) && nums[j]==nums[j+1]) j++;
+            }
+            while(i+1<sz(nums) && nums[i]==nums[i+1]) i++;
+        }
+        rt(res);
+    }
+};
