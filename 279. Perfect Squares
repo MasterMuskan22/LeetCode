@@ -1,0 +1,57 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getMin(int i,vi &arr,int n,vii &dp){
+        if(i>=sz(arr)) return 1e9;
+        if(i==sz(arr)-1){
+            if(n%arr[i]==0) return n/arr[i];
+            else rt(1e9);
+        }
+        if(dp[i][n]!=-1) rt(dp[i][n]);
+        int take=1e9;
+        int notTake=getMin(i+1,arr,n,dp);
+        if(n>=arr[i]) take=1+getMin(i,arr,n-arr[i],dp);
+        return dp[i][n]=min(take,notTake);
+    }
+    int numSquares(int n) {
+        vi arr;
+        int cnt=0;
+        rep(i,1,101) arr.pb(i*i);
+        srtr(arr);
+        // vii dp(sz(arr),vi(n+1,-1));
+        // return getMin(0,arr,n,dp);
+        vii dp(sz(arr)+1,vi(n+1,1e9));
+        rep(i,0,sz(arr)+1) dp[i][0]=0; 
+        rep(i,1,sz(arr)+1){
+            rep(j,1,n+1){
+                if(j>=arr[i-1]) dp[i][j]=min(dp[i-1][j],1+dp[i][j-arr[i-1]]);
+                else dp[i][j]=dp[i-1][j];
+            }
+        }
+        return dp[sz(arr)][n];
+    }
+};
