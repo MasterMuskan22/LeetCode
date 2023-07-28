@@ -37,25 +37,47 @@ int mod=1e9+7;
 class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
-        int maxi=0;
-        queue<pair<TreeNode*,ll>> q;
-        q.push({root,0});
+        // int maxi=0;
+        // queue<pair<TreeNode*,ll>> q;
+        // q.push({root,0});
+        // while(!q.empty()){
+        //     int n=sz(q);
+        //     ll mini=q.front().second;
+        //     int start=0,end=0;
+        //     rep(i,0,n){
+        //         auto it=q.front();
+        //         q.pop();
+        //         TreeNode* node=it.first;
+        //         ll curVal=it.second-mini;
+        //         if(i==0) start=curVal;
+        //         else if(i==n-1) end=curVal;
+        //         if(node->left) q.push({node->left,curVal*2+1});
+        //         if(node->right) q.push({node->right,curVal*2+2});
+        //     }
+        //     maxi=max(maxi,end-start+1);
+        // }
+        // rt(maxi);
+        ll maxi=0;
+        queue<pair<TreeNode*,int>> q;
+        q.push({root,1});
         while(!q.empty()){
+            ll first=0,last=0;
             int n=sz(q);
             ll mini=q.front().second;
-            int start=0,end=0;
             rep(i,0,n){
                 auto it=q.front();
                 q.pop();
-                TreeNode* node=it.first;
-                ll curVal=it.second-mini;
-                if(i==0) start=curVal;
-                else if(i==n-1) end=curVal;
-                if(node->left) q.push({node->left,curVal*2+1});
-                if(node->right) q.push({node->right,curVal*2+2});
+                if(i==0) first=it.second-mini;
+                else if(i==n-1) last=it.second-mini;
+                if(it.first->left){
+                    q.push({it.first->left,(ll)2*it.second+1});
+                }
+                if(it.first->right){
+                    q.push({it.first->right,(ll)2*it.second+2});
+                }
             }
-            maxi=max(maxi,end-start+1);
+            maxi=max(maxi,last-first+1);
         }
-        rt(maxi);
-    }
+        rt((int)maxi);
+    } 
 };
