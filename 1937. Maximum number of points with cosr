@@ -1,0 +1,72 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    ll getPoints(int i,int j,vii &arr,vlll &dp){
+        int m=sz(arr);
+        int n=sz(arr[0]);
+        if(i>=m) rt(0);
+        if(dp[i][j]!=-1) rt(dp[i][j]);
+        ll take=0;
+        rep(k,0,n){
+            take=max(take,arr[i][k]-abs(k-j)+getPoints(i+1,k,arr,dp));
+        }
+        return dp[i][j]=take;
+    }
+    long long maxPoints(vector<vector<int>>& points) {
+        int m=sz(points);
+        int n=sz(points[0]);
+        ll maxi=0;
+        // vlll dp(m,vll(n,-1));
+        // rep(j,0,n){
+        //     maxi=max(maxi,points[0][j]+getPoints(1,j,points,dp));
+        // }
+        // rt(maxi);
+        vlll dp(m,vll(n,-1));
+        rep(j,0,n) dp[0][j]=points[0][j];
+        rep(i,1,m){
+            vll left(n,-1);
+            left[0]=dp[i-1][0];
+            rep(j,1,n){
+                left[j]=max(left[j-1],dp[i-1][j]+j);
+            }
+            vll right(n,-1);
+            right[n-1]=dp[i-1][n-1]-n+1;
+            for(int j=n-2;j>=0;j--){
+                right[j]=max(right[j+1],dp[i-1][j]-j);
+            }
+            rep(j,0,n){
+                dp[i][j]=points[i][j]+max(left[j]-j,right[j]+j);
+            }
+        }
+        rep(i,0,m){
+            rep(j,0,n){
+                maxi=max(maxi,dp[i][j]);
+            }
+        }
+        rt(maxi);
+    }
+};
