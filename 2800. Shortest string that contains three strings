@@ -1,0 +1,61 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    string res="";
+    string getMergedString(string a,string b){
+        if(a.find(b)!=string::npos) return a;
+        else if(b.find(a)!=string::npos) return b;
+        else{
+            int len=min(sz(a),sz(b));
+            for(int i=len;i>=0;i--){
+                if(a.substr(sz(a)-i)==b.substr(0,i)) return a+b.substr(i);
+            }
+        }
+        rt(a+b);
+    }
+    string getSmallerString(string a,string b){
+        if(sz(a)==sz(b)){
+            if(a.compare(b)<0) return a;
+            return b;
+        }
+        return a.size()<b.size()?a:b;
+    }
+    void updateString(string a,string b,string c){
+        string temp=getMergedString(a,getMergedString(b,c));
+        res=getSmallerString(temp,res);
+    }
+    string minimumString(string a, string b, string c) {
+        res=a+b+c;
+        updateString(a,b,c);
+        updateString(a,c,b);
+        updateString(b,a,c);
+        updateString(b,c,a);
+        updateString(c,a,b);
+        updateString(c,b,a);
+        rt(res);
+    }
+};
