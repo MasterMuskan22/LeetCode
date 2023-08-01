@@ -1,0 +1,74 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    void bfs(queue<pi> &q,vii &vis,vii &grid){
+        int m=sz(grid);
+        int n=sz(grid[0]);
+        while(!q.empty()){
+            int r=q.front().first;
+            int c=q.front().second;
+            q.pop();
+            rep(i,0,4){
+                int nRow=r+dr[i];
+                int nCol=c+dc[i];
+                if(nRow>=0 && nRow<m && nCol>=0 && nCol<n && !vis[nRow][nCol] && grid[nRow][nCol]>=grid[r][c]){
+                    vis[nRow][nCol]=1;
+                    q.push({nRow,nCol});
+                }
+            }
+        }
+    }
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        vii res;
+        int m=sz(heights);
+        int n=sz(heights[0]);
+        queue<pi> pac;
+        queue<pi> atl;
+        vii visPac(m,vi(n,0));
+        vii visAtl(m,vi(n,0));
+        rep(i,0,m){
+            rep(j,0,n){
+                if(i==0 || j==0){
+                    pac.push({i,j});
+                    visPac[i][j]=1;
+                }
+                if(i==m-1 || j==n-1){
+                    atl.push({i,j});
+                    visAtl[i][j]=1;
+                }
+            }
+        }
+        bfs(pac,visPac,heights);
+        bfs(atl,visAtl,heights);
+        rep(i,0,m){
+            rep(j,0,n){
+                if(visPac[i][j]==1 && visAtl[i][j]==1) res.push_back({i,j});
+            }
+        }
+        rt(res);
+    }
+};
