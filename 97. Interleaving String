@@ -1,5 +1,5 @@
-/*The ways to success lies in hardwork,consistency,dedication,gratitude and all 
-that with a sweet smile on the face.*/
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
 #define ll long long
 #define vi vector<int>
 #define vll vector<ll>
@@ -19,25 +19,30 @@ that with a sweet smile on the face.*/
 #define debug(v) for(auto it:v) cout<<it<<" ";
 int dr[4]={-1,0,1,0};
 int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
 int mod=1e9+7;
 #define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
 class Solution {
 public:
-    bool getAns(int i,int j,int k,string &s1,string &s2,string &s3,vii &dp){
+    bool isPossible(int i,int j,int k,string &s1,string &s2,string &s3,vii &dp){
         if(i>=sz(s1) && j>=sz(s2) && k>=sz(s3)) rt(1);
-        if(i<sz(s1) && j<sz(s2) && dp[i][j]!=-1) rt(dp[i][j]);
-        //Something like take not take. If s1 and s3 have same char then add that and 
-        //move next, same for s2 and s3. If both have the same char then take one by one.
-        if(i<sz(s1) && j<sz(s2) && s3[k]==s1[i] && s3[k]==s2[j]){
-            return dp[i][j]=(getAns(i+1,j,k+1,s1,s2,s3,dp) || getAns(i,j+1,k+1,s1,s2,s3,dp));
+        if(dp[i][j]!=-1) rt(dp[i][j]);
+        bool same=0,notSame=0;
+        if(i!=sz(s1)){
+            if(s1[i]==s3[k]) same|=isPossible(i+1,j,k+1,s1,s2,s3,dp);
         }
-        else if(i<sz(s1) && s3[k]==s1[i]) return getAns(i+1,j,k+1,s1,s2,s3,dp);
-        else if(j<sz(s2) && s3[k]==s2[j]) return getAns(i,j+1,k+1,s1,s2,s3,dp);
-        return 0;
+        if(j!=sz(s2)){
+            if(s2[j]==s3[k]) same|=isPossible(i,j+1,k+1,s1,s2,s3,dp);
+        }
+        return dp[i][j]=same;
     }
     bool isInterleave(string s1, string s2, string s3) {
-        vii dp(sz(s1),vi(sz(s2),-1));
-        if(sz(s1)+sz(s2)!=sz(s3)) rt(0);
-        return getAns(0,0,0,s1,s2,s3,dp);
+        int n=sz(s1);
+        int m=sz(s2);
+        int k=sz(s3);
+        if(n+m!=k) rt(0);
+        vii dp(n+1,vi(m+1,-1));
+        return isPossible(0,0,0,s1,s2,s3,dp);
     }
 };
