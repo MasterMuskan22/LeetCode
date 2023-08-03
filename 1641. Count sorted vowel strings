@@ -1,0 +1,50 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class Solution {
+public:
+    int getCount(int i,int n,string &s,vii &dp){
+        if(i==sz(s)-1 || n==0) return 1;
+        if(dp[i][n]!=-1) rt(dp[i][n]);
+        int take=getCount(i,n-1,s,dp);
+        int notTake=getCount(i+1,n,s,dp);
+        return dp[i][n]=take+notTake;
+    }
+    int countVowelStrings(int n) {
+        string s="aeiou";
+        // vii dp(6,vi(n+1,-1));
+        // return getCount(0,n,s,dp);
+        vii dp(6,vi(n+1,0));
+        rep(i,0,6) dp[i][0]=1;
+        rep(i,1,6){
+            rep(j,1,n+1){
+                int take=dp[i][j-1];
+                int notTake=dp[i-1][j];
+                dp[i][j]=take+notTake;
+            }
+        }
+        rt(dp[5][n]);
+    }
+};
