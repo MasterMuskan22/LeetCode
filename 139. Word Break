@@ -25,30 +25,15 @@ int mod=1e9+7;
 #define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
 class Solution {
 public:
-    bool isValid(int i,string &s,unordered_set<string> &st,vi &dp){
-        if(i>=sz(s)) rt(1);
-        if(dp[i]!=-1) rt(dp[i]);
-        string temp="";
-        rep(j,i,sz(s)){
-            temp+=s[j];
-            if(st.find(temp)!=st.end()){
-                if(isValid(j+1,s,st,dp)) return dp[j]=1;
-            }
-        }
-        return dp[i]=0;
-    }
     bool wordBreak(string s, vector<string>& wordDict) {
-        unordered_set<string> st;
-        for(auto it:wordDict) st.insert(it);
-        // vi dp(sz(s),-1);
-        // return isValid(0,s,st,dp);
         vi dp(sz(s)+1,0);
         dp[sz(s)]=1;
         for(int i=sz(s)-1;i>=0;i--){
-            string temp="";
-            rep(j,i,sz(s)){
-                temp+=s[j];
-                if(st.find(temp)!=st.end() && dp[j+1]==1) dp[i]=1;
+            for(auto it:wordDict){
+                if(sz(it)+i<=sz(s)){
+                    if(s.substr(i,sz(it))==it) dp[i]=dp[i+sz(it)];
+                    if(dp[i]) break;
+                }
             }
         }
         rt(dp[0]);
