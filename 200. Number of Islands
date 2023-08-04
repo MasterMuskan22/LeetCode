@@ -1,0 +1,123 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class DisJointSet{
+public:
+    vector<int> rank;
+    vector<int> parent;
+    vector<int> size;
+    DisJointSet(int n){
+        rank.resize(n+1,0);
+        parent.resize(n+1);
+        size.resize(n+1);
+        for(int i=0;i<=n;i++){
+            parent[i]=i;
+            size[i]=i;
+        }
+    }
+    int findUltimateParent(int node){
+        if(node==parent[node]) return node;
+        return parent[node]=findUltimateParent(parent[node]);
+    }
+    void unionByRank(int node1,int node2){
+        int ultParentNode1=findUltimateParent(node1);
+        int ultParentNode2=findUltimateParent(node2);
+        if(ultParentNode1==ultParentNode2) return ;
+        if(rank[ultParentNode1]>rank[ultParentNode2]){
+            parent[ultParentNode2]=ultParentNode1;
+        }
+        else if(rank[ultParentNode1]<rank[ultParentNode2]){
+            parent[ultParentNode1]=ultParentNode2;
+        }
+        else{
+            parent[ultParentNode1]=ultParentNode2;
+            rank[ultParentNode1]++;
+        }
+    }
+    void unionBySize(int node1,int node2){
+        int ultParentNode1=findUltimateParent(node1);
+        int ultParentNode2=findUltimateParent(node2);
+        if(ultParentNode1==ultParentNode2) return ;
+        if(size[ultParentNode1]>size[ultParentNode2]){
+            parent[ultParentNode2]=ultParentNode1;
+            size[ultParentNode1]+=size[ultParentNode2];
+        }
+        else{
+            parent[ultParentNode1]=ultParentNode2;
+            size[ultParentNode2]+=size[ultParentNode1];
+        }
+    }
+};
+class Solution {
+public:
+    void dfs(int i,int j,vector<vector<char>> &grid,vii &vis){
+        vis[i][j]=1;
+        rep(k,0,4){
+            int nRow=i+dr[k];
+            int nCol=j+dc[k];
+            if(nRow>=0 && nRow<sz(grid) && nCol>=0 && nCol<sz(grid[0]) && !vis[nRow][nCol] && grid[nRow][nCol]=='1') dfs(nRow,nCol,grid,vis);
+        }
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        int m=sz(grid);
+        int n=sz(grid[0]);
+        // vii vis(m,vi(n,0));
+        // int cnt=0;
+        // rep(i,0,m){
+        //     rep(j,0,n){
+        //         if(grid[i][j]=='1'){
+        //             if(!vis[i][j]){
+        //                 dfs(i,j,grid,vis);
+        //                 cnt++;
+        //             }
+        //         }
+        //     }
+        // }
+        // rt(cnt);
+        DisJointSet ds(m*n);
+        int cnt=0;
+        vii vis(m,vi(n,0));
+        rep(i,0,m){
+            rep(j,0,n){
+                if(grid[i][j]=='1'){
+                    cnt++;
+                    vis[i][j]=1;
+                    rep(k,0,4){
+                        int nRow=i+dr[k];
+                        int nCol=j+dc[k];
+                        if(nRow>=0 && nRow<m && nCol>=0 && nCol<n && grid[nRow][nCol]=='1' && !vis[nRow][nCol]){
+                            if(ds.findUltimateParent(i*n+j)!=ds.findUltimateParent(nRow*n+nCol)){
+                                ds.unionBySize(i*n+j,nRow*n+nCol);
+                                // vis[nRow][nCol]=1;
+                                cnt--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        rt(cnt);
+    }
+};
