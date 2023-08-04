@@ -1,0 +1,130 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+class DisJointSet{
+public:
+    vector<int> rank;
+    vector<int> parent;
+    vector<int> size;
+    DisJointSet(int n){
+        rank.resize(n+1,0);
+        parent.resize(n+1);
+        size.resize(n+1);
+        for(int i=0;i<=n;i++){
+            parent[i]=i;
+            size[i]=1;
+        }
+    }
+    int findUltimateParent(int node){
+        if(node==parent[node]) return node;
+        return parent[node]=findUltimateParent(parent[node]);
+    }
+    void unionByRank(int node1,int node2){
+        int ultParentNode1=findUltimateParent(node1);
+        int ultParentNode2=findUltimateParent(node2);
+        if(ultParentNode1==ultParentNode2) return ;
+        if(rank[ultParentNode1]>rank[ultParentNode2]){
+            parent[ultParentNode2]=ultParentNode1;
+        }
+        else if(rank[ultParentNode1]<rank[ultParentNode2]){
+            parent[ultParentNode1]=ultParentNode2;
+        }
+        else{
+            parent[ultParentNode1]=ultParentNode2;
+            rank[ultParentNode1]++;
+        }
+    }
+    void unionBySize(int node1,int node2){
+        int ultParentNode1=findUltimateParent(node1);
+        int ultParentNode2=findUltimateParent(node2);
+        if(ultParentNode1==ultParentNode2) return ;
+        if(size[ultParentNode1]>size[ultParentNode2]){
+            parent[ultParentNode2]=ultParentNode1;
+            size[ultParentNode1]+=size[ultParentNode2];
+        }
+        else{
+            parent[ultParentNode1]=ultParentNode2;
+            size[ultParentNode2]+=size[ultParentNode1];
+        }
+    }
+};
+class Solution {
+public:
+    void dfs(int node,vi adj[],vi &vis,ll &cnt){
+        vis[node]=1;
+        cnt++;
+        for(auto adjNode:adj[node]){
+            if(!vis[adjNode]) dfs(adjNode,adj,vis,cnt);
+        }
+    }
+    long long countPairs(int n, vector<vector<int>>& edges) {
+        DisJointSet ds(n);
+        for(auto it:edges){
+            if(ds.findUltimateParent(it[0])!=ds.findUltimateParent(it[1])){
+                ds.unionBySize(it[0],it[1]);
+            }
+        }
+        ll res=(ll)n*(n-1)/2; //Toal number of edges
+        rep(i,0,n){
+            if(ds.parent[i]==i){
+                ll cnt=ds.size[i];
+                res-=(ll)cnt*(cnt-1)/2;
+            }
+        }
+        // vector<int> adj[n];
+        // for(auto it:edges){
+        //     adj[it[0]].pb(it[1]);
+        //     adj[it[1]].pb(it[0]);
+        // }
+        // vi vis(n,0);
+        // rep(i,0,n){
+        //     if(!vis[i]){
+        //         ll cnt=0;
+        //         dfs(i,adj,vis,cnt);
+        //         res-=(ll)cnt*(cnt-1)/2;
+        //     }
+        // }
+        // queue<int> q;
+        // rep(i,0,n){
+        //     ll cnt=0;
+        //     if(vis[i]==1) continue;
+        //     q.push(i);
+        //     vis[i]=1;
+        //     while(!q.empty()){
+        //         cnt++;
+        //         auto node=q.front();
+        //         q.pop();
+        //         for(auto adjNode:adj[node]){
+        //             if(!vis[adjNode]){
+        //                 vis[adjNode]=1;
+        //                 q.push(adjNode);
+        //             }
+        //         }
+        //     }
+        //     res-=(ll)(cnt)*(cnt-1)/2;
+        // }
+        rt(res);
+    }
+};
