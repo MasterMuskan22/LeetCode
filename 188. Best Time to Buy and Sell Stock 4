@@ -1,0 +1,88 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getMaxProfit(int i,int buy,int k,vi &prices,vector<vii> &dp){
+        if(i>=sz(prices) || k<=0) rt(0);
+        if(dp[i][buy][k]!=-1) rt(dp[i][buy][k]);
+        int add=0,sell=0;
+        if(buy==1) add=max(getMaxProfit(i+1,0,k,prices,dp)-prices[i],getMaxProfit(i+1,1,k,prices,dp));
+        else sell=max(getMaxProfit(i+1,1,k-1,prices,dp)+prices[i],getMaxProfit(i+1,0,k,prices,dp));
+        return dp[i][buy][k]=max(add,sell);
+    }
+    int maxProfit(int k, vector<int>& prices) {
+        int n=sz(prices);
+        //MEMOIZATION
+        // vector<vii> dp(n,vii(2,vi(k+1,-1)));
+        // return getMaxProfit(0,1,k,prices,dp);
+        //TABULATION
+        // vector<vii> dp(n+1,vii(2,vi(k+1,0)));
+        // for(int i=n-1;i>=0;i--){
+        //     rep(buy,0,2){
+        //         rep(times,1,k+1){
+        //             if(buy==1) dp[i][buy][times]=max(dp[i+1][0][times]-prices[i],dp[i+1][1][times]);
+        //             else dp[i][buy][times]=max(dp[i+1][1][times-1]+prices[i],dp[i+1][0][times]);
+        //         }
+        //     }
+        // }
+        // rt(dp[0][1][k]);
+        //SPACE OPTIMIZATION - 2D DP
+        // vii prev(2,vi(k+1,0));
+        // vii cur(2,vi(k+1,0));
+        // for(int i=n-1;i>=0;i--){
+        //     rep(buy,0,2){
+        //         rep(times,1,k+1){
+        //             if(buy==1) cur[buy][times]=max(prev[0][times]-prices[i],prev[1][times]);
+        //             else cur[buy][times]=max(prev[1][times-1]+prices[i],prev[0][times]);
+        //         }
+        //     }
+        //     prev=cur;
+        // }
+        // rt(prev[1][k]);
+        //SPACE OPTIMAZTION - 1D DP
+        vi prevBuy(k+1,0);
+        vi prevSell(k+1,0);
+        vi curBuy(k+1,0);
+        vi curSell(k+1,0);
+        for(int i=n-1;i>=0;i--){
+            rep(buy,0,2){
+                rep(times,1,k+1){
+                    if(buy==1) curBuy[times]=max(prevSell[times]-prices[i],prevBuy[times]);
+                    else curSell[times]=max(prevBuy[times-1]+prices[i],prevSell[times]);
+                }
+            }
+            prevBuy=curBuy;
+            prevSell=curSell;
+        }
+        rt(prevBuy[k]);
+    }
+};
