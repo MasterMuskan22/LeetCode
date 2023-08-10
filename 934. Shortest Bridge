@@ -1,0 +1,75 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    void dfs(int r,int c,vii &grid,vii &vis){
+        vis[r][c]=1;
+        grid[r][c]=2;
+        rep(i,0,4){
+            int nRow=r+dr[i];
+            int nCol=c+dc[i];
+            if(nRow>=0 && nRow<sz(grid) && nCol>=0 && nCol<sz(grid) && !vis[nRow][nCol] && 
+            grid[nRow][nCol]!=0){
+                dfs(nRow,nCol,grid,vis);
+            }
+        }
+    }
+    int shortestBridge(vector<vector<int>>& grid) {
+        int n=sz(grid);
+        queue<pi> q;
+        vii vis(n,vi(n,0));
+        int x=-1,y=-1;
+        rep(i,0,n){
+            rep(j,0,n){
+                if(grid[i][j]==1){
+                    x=i,y=j;
+                    break;
+                }
+            }
+        }
+        dfs(x,y,grid,vis);
+        vector<pi> is1,is2;
+        rep(i,0,n){
+            rep(j,0,n){
+                if(grid[i][j]==1) is1.push_back({i,j});
+                else if(grid[i][j]==2) is2.push_back({i,j});
+            }
+        }
+        int min_cnt=1e9;
+        rep(i,0,sz(is1)){
+            rep(j,0,sz(is2)){
+                min_cnt=min(min_cnt,abs(is1[i].first-is2[j].first)+abs(is1[i].second-is2[j].second)-1);
+            }
+        }
+        rt(min_cnt);
+    }
+};
