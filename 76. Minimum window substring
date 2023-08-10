@@ -1,0 +1,69 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        if(sz(t)>sz(s)) rt("");
+        unordered_map<char,int> mp;
+        for(auto it:t) mp[it]++;
+        int start=-1,end=-1;
+        int res=1e9;
+        int cnt=sz(mp);
+        int i=0,j=0;
+        while(j<sz(s)){
+            mp[s[j]]--;
+            //We found one character that is present in both s and t
+            if(mp[s[j]]==0){
+                cnt--;
+            }
+            //All the characters in t are found in s
+            if(cnt==0){
+                while(cnt==0){
+                    //If the new window is smaller in size then compute
+                    if(res>j-i+1){
+                        res=j-i+1;
+                        start=i,end=j;
+                    }
+                    //Shrink the window now
+                    if(mp.find(s[i])!=mp.end()){
+                        mp[s[i]]++;
+                        if(mp[s[i]]>0) cnt++;
+                        i++;
+                    }
+                }
+            }
+            j++;
+        }
+        if(res!=1e9) return s.substr(start,end-start+1);
+        rt("");
+    }
+};
