@@ -1,0 +1,101 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    bool bfs(int r,int c,vii &dist,int mid){
+        int n=sz(dist);
+        if(dist[r][c]<mid) rt(0);
+        queue<pi> q;
+        q.push({r,c});
+        vii vis(sz(dist),vi(sz(dist),0));
+        vis[r][c]=1;
+        while(!q.empty()){
+            int x=q.front().first;
+            int y=q.front().second;
+            q.pop();
+            if(x==n-1 && y==n-1) rt(1);
+            rep(i,0,4){
+                int nRow=x+dr[i];
+                int nCol=y+dc[i];
+                if(nRow>=0 && nRow<n && nCol>=0 && nCol<n && !vis[nRow][nCol]){
+                    if(dist[nRow][nCol]>=mid){
+                        vis[nRow][nCol]=1;
+                        q.push({nRow,nCol});
+                    }
+                }
+            }
+        }
+        rt(0);
+    }
+    int maximumSafenessFactor(vector<vector<int>>& grid) {
+        int n=sz(grid);
+        int maxi=0;
+        vii dist(n,vi(n,INT_MAX));
+        queue<pair<pi,int>> q;
+        rep(i,0,n){
+            rep(j,0,n){
+                if(grid[i][j]==1){
+                    q.push({{i,j},0});
+                    dist[i][j]=0;
+                }
+            }
+        }
+        while(!q.empty()){
+            int r=q.front().first.first;
+            int c=q.front().first.second;
+            int wt=q.front().second;
+            maxi=max(maxi,wt);
+            q.pop();
+            rep(i,0,4){
+                int nRow=r+dr[i];
+                int nCol=c+dc[i];
+                if(nRow>=0 && nRow<n && nCol>=0 && nCol<n){
+                    if(dist[nRow][nCol]>wt+1){
+                        dist[nRow][nCol]=wt+1;
+                        q.push({{nRow,nCol},wt+1});
+                    }
+                }
+            }
+        }
+        int start=0,end=maxi;
+        int res=0;
+        while(start<=end){
+            int mid=start+(end-start)/2;
+            if(bfs(0,0,dist,mid)){
+                res=max(res,mid);
+                start=mid+1;
+            }
+            else end=mid-1;
+        }
+        rt(res);
+    }
+};
