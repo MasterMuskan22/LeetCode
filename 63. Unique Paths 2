@@ -1,18 +1,24 @@
 /*Success is achieved by perseverance, devotion, thankfulness, and 
 hard work—all while wearing a charming grin.*/
 #define ll long long
+#define lli long long int
 #define vi vector<int>
 #define vll vector<ll>
 #define vii vector<vector<int>>
 #define vlll vector<vector<ll>>
 #define vs vector<string> 
 #define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
 #define pb(x) push_back(x)
 #define rep(i,a,b) for(int i=a;i<b;i++)
 #define srt(v) sort(begin(v),end(v));
 #define srtr(v) sort(rbegin(v),rend(v))
 #define rev(v) reverse(begin(v),end(v))
 #define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
 #define rt(v) return v
 #define sz(v) size(v)
 #define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
@@ -22,35 +28,47 @@ int dc[4]={0,1,0,-1};
 int dr1[8]={-1,-1,0,1,1,1,0,-1};
 int dc1[8]={0,1,1,1,0,-1,-1,-1};
 int mod=1e9+7;
-#define speed ios_base::sync_with_stdio(false); cin.tie(NULL);
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
 class Solution {
 public:
-    int getPaths(int i,int j,vii &arr,vii &dp){
-        if(i>=sz(arr) || j>=sz(arr[0])){
-            return 0;
-        }
-        if(i==sz(arr)-1 && j==sz(arr[0])-1){
-            if(arr[i][j]==0) return 1;
-        }
+    int getPaths(int i,int j,vii &grid,vii &dp){
+        if(i>=sz(grid) || j==sz(grid[0])) rt(0);
+        if(i==sz(grid)-1 && j==sz(grid[0])-1 && grid[i][j]==0) rt(1);
         if(dp[i][j]!=-1) rt(dp[i][j]);
-        int take=0,notTake=0;
-        if(arr[i][j]==0) take=getPaths(i+1,j,arr,dp)+getPaths(i,j+1,arr,dp);
-        else notTake=0;
-        return dp[i][j]=take+notTake;
+        int down=0,right=0;
+        if(grid[i][j]==0) down=getPaths(i+1,j,grid,dp);
+        if(grid[i][j]==0) right=getPaths(i,j+1,grid,dp);
+        return dp[i][j]=down+right;
     }
     int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
         int m=sz(obstacleGrid);
         int n=sz(obstacleGrid[0]);
         // vii dp(m,vi(n,-1));
-        // if(obstacleGrid[0][0]==1 || obstacleGrid[m-1][n-1]==1) rt(0);
-        // rt(getPaths(0,0,obstacleGrid,dp));
-        vii dp(m+1,vi(n+1,0));
-        dp[0][1]=1;
-        for(int i=1;i<=m;i++){
-            for(int j=1;j<=n;j++){
-                if(obstacleGrid[i-1][j-1]==0) dp[i][j]=dp[i-1][j]+dp[i][j-1];
+        // return getPaths(0,0,obstacleGrid,dp);
+        // vii dp(m+1,vi(n+1,0));
+        // dp[0][1]=1;
+        // rep(i,1,m+1){
+        //     rep(j,1,n+1){
+        //         int take=0;
+        //         int notTake=0;
+        //         if(obstacleGrid[i-1][j-1]==0) take=dp[i-1][j]+dp[i][j-1];
+        //         else notTake=0;
+        //         dp[i][j]=take+notTake;
+        //     }
+        // }
+        // rt(dp[m][n]);
+        vi prev(n+1,0);
+        vi cur(n+1,0);
+        prev[1]=1;
+        rep(i,1,m+1){
+            rep(j,1,n+1){
+                int take=0,notTake=0;
+                if(obstacleGrid[i-1][j-1]==0) take=prev[j]+cur[j-1];
+                else notTake=0;
+                cur[j]=take+notTake;
             }
+            prev=cur;
         }
-        rt(dp[m][n]);
+        rt(prev[n]);
     }
 };
