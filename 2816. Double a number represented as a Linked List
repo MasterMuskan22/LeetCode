@@ -1,0 +1,82 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    ListNode* getReverse(ListNode* &head){
+        ListNode* temp=NULL;
+        while(head){
+            ListNode* next=head->next;
+            head->next=temp;
+            temp=head;
+            head=next;
+        }
+        rt(temp);
+    }
+    ListNode* doubleIt(ListNode* head) {
+        string s="";
+        while(head){
+            s+=(head->val+'0');
+            head=head->next;
+        }
+        ListNode* res=new ListNode();
+        ListNode* temp=res;
+        int i=0;
+        rev(s);
+        int carry=0;
+        while(i<sz(s)){
+            int num=s[i]-'0';
+            num*=2;
+            int add=num%10+carry;
+            carry=num/10;
+            ListNode* dummy=new ListNode(add);
+            temp->next=dummy;
+            temp=temp->next;
+            i++;
+        }
+        if(carry!=0){
+            temp->next=new ListNode(carry);
+            temp=temp->next;
+        }
+        ListNode* ans=getReverse(res->next);
+        rt(temp);
+    }
+};
