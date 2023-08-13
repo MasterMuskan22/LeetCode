@@ -1,0 +1,38 @@
+int mod=1003;
+#define ll long long
+class Solution{
+public:
+    ll getCount(int i,int j,string &s,int isTrue,vector<vector<vector<ll>>> &dp){
+        if(i>j) return 0;
+        if(i==j){
+            if(isTrue==1) return s[i]=='T';
+            else return s[i]=='F';
+        }
+        if(dp[i][j][isTrue]!=-1) return dp[i][j][isTrue];
+        ll ways=0;
+        for(int ind=i+1;ind<=j-1;ind+=2){
+            ll leftTrue=getCount(i,ind-1,s,1,dp);
+            ll leftFalse=getCount(i,ind-1,s,0,dp);
+            ll rightTrue=getCount(ind+1,j,s,1,dp);
+            ll rightFalse=getCount(ind+1,j,s,0,dp);
+            if(s[ind]=='&'){
+                if(isTrue==1) ways=(ways+(leftTrue*rightTrue)%mod)%mod;
+                else ways=(ways+(leftFalse*rightFalse)%mod+(leftTrue*rightFalse)%mod+(leftFalse*rightTrue)%mod)%mod;
+            }
+            else if(s[ind]=='|'){
+                if(isTrue==1) ways=(ways+(leftFalse*rightTrue)%mod+(leftTrue*rightFalse)%mod+(leftTrue*rightTrue)%mod)%mod;
+                else ways=(ways+(leftFalse*rightFalse)%mod)%mod;
+            }
+            else if(s[ind]=='^'){
+                if(isTrue) ways=(ways+(leftFalse*rightTrue)%mod+(leftTrue*rightFalse)%mod)%mod;
+                else ways=(ways+(leftFalse*rightFalse)%mod+(leftTrue*rightTrue)%mod)%mod;
+            }
+        }
+        return dp[i][j][isTrue]=ways%mod;
+    }
+    int countWays(int N, string S){
+        // code here
+        vector<vector<vector<ll>>> dp(N,vector<vector<ll>>(N,vector<ll>(2,-1)));
+        return getCount(0,N-1,S,1,dp);
+    }
+};
