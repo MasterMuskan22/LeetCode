@@ -1,0 +1,79 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    bool checkFirst(int i,vi &nums){
+        if(i+1<sz(nums)){
+            if(nums[i]==nums[i+1]) rt(1);
+        }
+        rt(0);
+    }
+    bool checkSecond(int i,vi &nums){
+        if(i+2<sz(nums)){
+            if(nums[i+2]==nums[i+1] && nums[i+1]==nums[i]) rt(1);
+        }
+        rt(0);
+    }
+    bool checkThird(int i,vi &nums){
+        if(i+2<sz(nums)){
+            if(nums[i+2]-nums[i+1]==1 && nums[i+1]-nums[i]==1) rt(1);
+        }
+        rt(0);
+    }
+    bool getPartition(int i,vi &nums,vi &dp){
+        if(i>=sz(nums)) rt(1);
+        if(dp[i]!=-1) rt(dp[i]);
+        bool ans=0;
+        bool ans1=checkFirst(i,nums);
+        bool ans2=checkSecond(i,nums);
+        bool ans3=checkThird(i,nums);
+        if(ans1) ans=ans|getPartition(i+2,nums,dp);
+        if(ans2) ans=ans|getPartition(i+3,nums,dp);
+        if(ans3) ans=ans|getPartition(i+3,nums,dp);
+        return dp[i]=ans;
+    }
+    bool validPartition(vector<int>& nums) {
+        int n=sz(nums);
+        // vi dp(n+1,-1);
+        // return getPartition(0,nums,dp);
+        vi dp(n+1,0);
+        dp[0]=1;
+        rep(i,1,sz(nums)+1){
+            bool ans1=0,ans2=0,ans3=0;
+            if(i>1 && nums[i-1]==nums[i-2]) ans1|=dp[i-2];
+            if(i>2 && nums[i-1]==nums[i-2] && nums[i-1]==nums[i-3]) ans2|=dp[i-3];
+            if(i>2 && nums[i-1]-nums[i-2]==1 && nums[i-2]-nums[i-3]==1) ans3|=dp[i-3];
+            dp[i]=ans1|ans2|ans3;
+        }
+        rt(dp[n]);
+    }
+};
