@@ -31,29 +31,55 @@ int mod=1e9+7;
 #define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
 class MinStack {
 public:
-    stack<int> st;
-    multiset<int> mst;
+    // stack<int> st;
+    // multiset<int> mst;
+
+    // stack<int> st1,st2;
+
+    vector<pi> st;
     MinStack() {
         
     }
     
     void push(int val) {
-        st.push(val);
-        mst.insert(val);
+        // st.push(val);
+        // mst.insert(val);
+
+        // if(st2.empty() || val<=getMin()) st2.push(val);
+        // st1.push(val);
+
+        if(st.empty()) st.push_back({val,val});
+        else{
+            int mini=st.back().second;
+            st.push_back({val,min(val,mini)});
+        }
     }
     
     void pop() {
-        int x=st.top();
-        st.pop();
-        mst.erase(mst.find(x));
+        // int x=st.top();
+        // st.pop();
+        // mst.erase(mst.find(x));
+
+        // if(st1.top()==getMin()) st2.pop();
+        // st1.pop();
+
+        st.pop_back();
     }
     
     int top() {
-        return st.top();
+        //return st.top();
+
+        // return st1.top();
+
+        return st.back().first;
     }
     
     int getMin() {
-        return *mst.begin();
+        // return *mst.begin();
+        
+        // return st2.top();
+
+        return st.back().second;
     }
 };
 
