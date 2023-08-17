@@ -1,0 +1,66 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getMaxArea(int i,int j,vcc &matrix,vii &dp){
+        if(i>=sz(matrix) || j>=sz(matrix[0])) return 0;
+        if(dp[i][j]!=-1) rt(dp[i][j]);
+        int max_area=0;
+        if(matrix[i][j]=='1'){
+            int area=1+min({getMaxArea(i,j+1,matrix,dp),getMaxArea(i+1,j+1,matrix,dp),getMaxArea(i+1,j,matrix,dp)});
+            max_area=max(max_area,area);
+        }
+        rt(dp[i][j]=max_area);
+    }
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int m=sz(matrix);
+        int n=sz(matrix[0]);
+        // vii dp(m,vi(n,-1));
+        int max_area=0;
+        // rep(i,0,m){
+        //     rep(j,0,n){
+        //         if(matrix[i][j]=='1') max_area=max(max_area,getMaxArea(i,j,matrix,dp));
+        //     }
+        // }
+        // int max_area=0;
+        // vii dp(m+1,vi(n+1,0));
+        // rep(i,1,m+1){
+        //     rep(j,1,n+1){
+        //         if(matrix[i-1][j-1]=='1'){
+        //             dp[i][j]=min({dp[i][j-1],dp[i-1][j-1],dp[i-1][j]})+1;
+        //         }
+        //         max_area=max(max_area,dp[i][j]);
+        //     }
+        // }
+        rt(max_area*max_area);
+    }
+};
