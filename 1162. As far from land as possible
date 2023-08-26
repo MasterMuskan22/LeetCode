@@ -1,0 +1,109 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& grid) {
+        speed;
+        int n=sz(grid);
+        queue<pi> q;
+        rep(i,0,n){
+            rep(j,0,n){
+                if(grid[i][j]==1) q.push({i,j});
+            }
+        }
+        if(sz(q)==0 || sz(q)==n*n) rt(-1);
+        int max_dist=0;
+        while(!q.empty()){
+            int x=sz(q);
+            while(x--){
+                int r=q.front().first;
+                int c=q.front().second;
+                q.pop();
+                rep(i,0,4){
+                    int nRow=r+dr[i];
+                    int nCol=c+dc[i];
+                    if(nRow>=0 && nRow<n && nCol>=0 && nCol<n && grid[nRow][nCol]==0){
+                        q.push({nRow,nCol});
+                        grid[nRow][nCol]=1;
+                    }
+                }
+            }
+            max_dist++;
+        }
+        rt(max_dist-1);
+        //Gives TLE as we are exploring all the paths again and again.
+        // vii dist(n,vi(n,1e9));
+        // int zcnt=0,ocnt=0;
+        // rep(i,0,n){
+        //     rep(j,0,n){
+        //         if(grid[i][j]==0) zcnt++;
+        //         else ocnt++;
+        //     }
+        // }
+        // if(ocnt==n*n || zcnt==n*n) rt(-1);
+        // rep(i,0,n){
+        //     rep(j,0,n){
+        //         if(grid[i][j]==1){
+        //             dist[i][j]=0;
+        //             queue<pi> q;
+        //             q.push({i,j});
+        //             vii vis(n,vi(n,0));
+        //             vis[i][j]=1;
+        //             while(!q.empty()){
+        //                 int r=q.front().first;
+        //                 int c=q.front().second;
+        //                 q.pop();
+        //                 rep(k,0,4){
+        //                     int nRow=r+dr[k];
+        //                     int nCol=c+dc[k];
+        //                     if(nRow>=0 && nRow<n && nCol>=0 && nCol<n && !vis[nRow][nCol]){
+        //                         if(dist[nRow][nCol]>dist[r][c]+abs(nRow-r)+abs(nCol-c)){
+        //                             vis[nRow][nCol]=1;
+        //                             dist[nRow][nCol]=dist[r][c]+abs(nRow-r)+abs(nCol-c);
+        //                             q.push({nRow,nCol});
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // int maxi=0;
+        // rep(i,0,n){
+        //     rep(j,0,n){
+        //         if(dist[i][j]==1e9) rt(-1);
+        //         maxi=max(maxi,dist[i][j]);
+        //     }
+        // }
+        // rt(maxi);
+    }
+};
