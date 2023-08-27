@@ -1,0 +1,17 @@
+class Solution {
+public:
+    long long minimumPossibleSum(int n, int target) {
+        long long sum=0;
+        unordered_set<long long> st;
+        long long start=1;
+        while(st.size()<n){
+            if(st.find(target-start)!=st.end()) start++;
+            else{
+                sum+=start;
+                st.insert(start);
+                start++;
+            }
+        }
+        return sum;
+    }
+};
