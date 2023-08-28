@@ -1,0 +1,72 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    long long maximumImportance(int n, vector<vector<int>>& roads) {
+        vll adj[n];
+        for(auto it:roads){
+            adj[it[0]].pb(it[1]);
+            adj[it[1]].pb(it[0]);
+        }
+        vll indegree(n,0);
+        rep(i,0,n){
+            for(auto it:adj[i]) indegree[it]++;
+        }
+        vector<pair<ll,ll>> imp;
+        ll x=1;
+        map<ll,ll> mp;
+        rep(i,0,n){
+            mp[i]=indegree[i];
+        }
+        vector<pll> v;
+        ll prev=1;
+        for(auto it:mp){
+            v.push_back({it.second,it.first});
+        }
+        srt(v);
+        rep(i,0,n){
+            imp.push_back({v[i].second,prev});
+            prev++;
+        }
+        umap mm;
+        for(auto it:imp){
+            mm[it.first]=it.second;
+        }
+        ll sum=0;
+        rep(i,0,sz(roads)){
+            ll x=roads[i][0];
+            ll y=roads[i][1];
+            sum+=mm[x]+mm[y];
+        }
+        rt(sum);
+    }
+};
