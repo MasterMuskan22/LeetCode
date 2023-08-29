@@ -1,0 +1,93 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    pi getCount(string &s){
+        int zero_cnt=0;
+        for(auto it:s){
+            if(it=='0') zero_cnt++;
+        }
+        int one_cnt=sz(s)-zero_cnt;
+        return {zero_cnt,one_cnt};
+    }
+    int getMaxSubs(int i,vs &s,int m,int n,vector<vii> &dp){
+        if(i>=sz(s) || m<0 || n<0) rt(0);
+        if(dp[i][m][n]!=-1) rt(dp[i][m][n]);
+        int take=0,take_but_not=0,notTake=0;
+        pi cnt=getCount(s[i]);
+        if(cnt.first<=m && cnt.second<=n){
+            take=1+getMaxSubs(i+1,s,m-cnt.first,n-cnt.second,dp);
+            take_but_not=getMaxSubs(i+1,s,m,n,dp);
+        }
+        else notTake=getMaxSubs(i+1,s,m,n,dp);
+        return dp[i][m][n]=max({take,take_but_not,notTake});
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        int x=sz(strs);
+        // vector<vii> dp(x+1,vii(m+1,vi(n+1,-1)));
+        // rt(getMaxSubs(0,strs,m,n,dp));
+        // vector<vii> dp(x+1,vii(m+1,vi(n+1,0)));
+        // rep(i,1,x+1){
+        //     rep(j,0,m+1){
+        //         rep(k,0,n+1){
+        //             int take=0,take_but_not=0,notTake=0;
+        //             pi cnt=getCount(strs[i-1]);
+        //             if(j>=cnt.first && k>=cnt.second){
+        //                 take=1+dp[i-1][j-cnt.first][k-cnt.second];
+        //                 take_but_not=dp[i-1][j][k];
+        //             }
+        //             else notTake=dp[i-1][j][k];
+        //             dp[i][j][k]=max({take,take_but_not,notTake});
+        //         }
+        //     }
+        // }
+        // rt(dp[x][m][n]);
+        vii prev(m+1,vi(n+1,0));
+        vii cur(m+1,vi(n+1,0));
+        rep(i,1,x+1){
+            rep(j,0,m+1){
+                rep(k,0,n+1){
+                    int take=0,take_but_not=0,notTake=0;
+                    pi cnt=getCount(strs[i-1]);
+                    if(j>=cnt.first && k>=cnt.second){
+                        take=1+prev[j-cnt.first][k-cnt.second];
+                        take_but_not=prev[j][k];
+                    }
+                    else notTake=prev[j][k];
+                    cur[j][k]=max({take,take_but_not,notTake});
+                }
+            }
+            prev=cur;
+        }
+        rt(prev[m][n]);
+    }
+};
