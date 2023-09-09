@@ -1,0 +1,81 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    string longestDiverseString(int a, int b, int c) {
+        string res="";
+        priority_queue<pair<int,char>> pq;
+        if(a!=0) pq.push({a,'a'});
+        if(b!=0) pq.push({b,'b'});
+        if(c!=0) pq.push({c,'c'});
+        while(pq.size()>1){
+            auto it=pq.top();
+            pq.pop();
+            auto it2=pq.top();
+            pq.pop();
+            int cnt1=it.first;
+            int cnt2=it2.first;
+            if(cnt1>2){
+                res+=it.second;
+                res+=it.second;
+                cnt1-=2;
+            }
+            else{
+                res+=it.second;
+                cnt1--;
+            }
+            if(cnt2>2 && cnt2>=cnt1){
+                res+=it2.second;
+                res+=it2.second;
+                cnt2-=2;
+            }
+            else{
+                res+=it2.second;
+                cnt2--;
+            }
+            if(cnt1>0) pq.push({cnt1,it.second});
+            if(cnt2>0) pq.push({cnt2,it2.second});
+        }
+        if(!pq.empty()){
+            if(sz(res)==0 || res.back()!=pq.top().second){
+                int cnt=pq.top().first;
+                if(cnt==1) res+=pq.top().second;
+                else if(cnt>1){
+                    res+=pq.top().second;
+                    res+=pq.top().second;
+                }
+            }
+        }
+        rt(res);
+    }
+};
