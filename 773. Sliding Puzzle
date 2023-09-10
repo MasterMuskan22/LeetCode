@@ -1,0 +1,82 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define pii pair<pi,int>
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int slidingPuzzle(vector<vector<int>>& board) {
+        string res="123450";
+        string s="";
+        for(auto it:board){
+            for(auto i:it) s+=i+'0';
+        }
+        queue<pair<string,int>> q;
+        unordered_set<string> st; // To check whether we have visited the same string or not
+        q.push({s,0});
+        while(!q.empty()){
+            string x=q.front().first;
+            int steps=q.front().second;
+            st.insert(x);
+            if(x==res) rt(steps);
+            q.pop();
+            int ind=-1;
+            rep(i,0,sz(x)){
+                if(x[i]=='0') ind=i;
+            }
+            //Going Up -> Means you are at 2nd row, so index should start from 3 in string
+            if(ind>=3){
+                string temp=x;
+                swap(temp[ind],temp[ind-3]);
+                if(st.find(temp)==st.end()) q.push({temp,steps+1});
+            }
+            //Going Down -> Means you are at top row, so index should be less than 5
+            if(ind+3<=5){
+                string temp=x;
+                swap(temp[ind],temp[ind+3]);
+                if(st.find(temp)==st.end()) q.push({temp,steps+1});
+            }
+            //Going Left -> Have to go left means you should not be at 0 and 3
+            if(ind!=0 && ind!=3){
+                string temp=x;
+                swap(temp[ind],temp[ind-1]);
+                if(st.find(temp)==st.end()) q.push({temp,steps+1});
+            }
+            //Going Right -> Have to go right means you should not be at 2 and 5
+            if(ind!=2 && ind!=5){
+                string temp=x;
+                swap(temp[ind],temp[ind+1]);
+                if(st.find(temp)==st.end()) q.push({temp,steps+1});
+            }
+        }
+        rt(-1);
+    }
+};
