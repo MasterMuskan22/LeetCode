@@ -1,0 +1,70 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getMaxProfit(int i,int buy,vi &prices,vii &dp){
+        if(i>=sz(prices)) rt(0);
+        if(dp[i][buy]!=-1) rt(dp[i][buy]);
+        int take=0,notTake=0;
+        if(buy==1) take=max(-prices[i]+getMaxProfit(i+1,0,prices,dp),getMaxProfit(i+1,1,prices,dp));
+        else notTake=max(prices[i]+getMaxProfit(i+2,1,prices,dp),getMaxProfit(i+1,0,prices,dp));
+        return dp[i][buy]=take+notTake;
+    }
+    int maxProfit(vector<int>& prices) {
+        int n=sz(prices);
+        // vii dp(n,vi(2,-1));
+        // return getMaxProfit(0,1,prices,dp);
+        // vii dp(n+2,vi(2,0));
+        // for(int i=n-1;i>=0;i--){
+        //     rep(buy,0,2){
+        //         int take=0,notTake=0;
+        //         if(buy==1) take=max(-prices[i]+dp[i+1][0],dp[i+1][1]);
+        //         else notTake=max(prices[i]+dp[i+2][1],dp[i+1][0]);
+        //         dp[i][buy]=take+notTake;
+        //     }
+        // }
+        // rt(dp[0][1]);
+        vi prev(2,0);
+        vi prev2(2,0);
+        for(int i=n-1;i>=0;i--){
+            vi cur(2,0);
+            rep(buy,0,2){
+                if(buy==1) cur[buy]=max(-prices[i]+prev[0],prev[1]);
+                else cur[buy]=max(prices[i]+prev2[1],prev[0]);
+            }
+            prev2=prev;
+            prev=cur;
+        }
+        rt(prev[1]);
+    }
+};
