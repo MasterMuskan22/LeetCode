@@ -1,0 +1,66 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    bool isPossible(int mid,int budget,vii &arr,vi &stock,vi &cost){
+        ll min_cost=1e9;
+        rep(i,0,sz(arr)){
+            ll cur_cost=0;
+            //Looping on all compositions
+            rep(j,0,sz(stock)){
+                ll cur_metal=arr[i][j];
+                ll cur_req=cur_metal*mid; //The current requirement of this composition
+                if(cur_req>stock[j]){
+                    ll extra_need=(cur_req-stock[j])*cost[j];
+                    cur_cost+=extra_need;
+                }
+            }
+            min_cost=min(min_cost,cur_cost);
+        }
+        rt(budget>=min_cost);
+    }
+    int maxNumberOfAlloys(int n, int k, int budget, vector<vector<int>>& composition, vector<int>& stock, vector<int>& cost) {
+        ll start=0,end=1e9;
+        ll max_alloy=0;
+        while(start<=end){
+            ll mid=start+(end-start)/2; //Number of alloys we are binary searching upon
+            if(isPossible(mid,budget,composition,stock,cost)){
+                max_alloy=mid;
+                start=mid+1;
+                //If possible then store and move to get more alloys within budget
+            }
+            else end=mid-1;
+        }
+        rt((int)max_alloy);
+    }
+};
