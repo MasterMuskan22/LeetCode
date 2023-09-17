@@ -1,0 +1,61 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int shortestPathLength(vector<vector<int>>& graph) {
+        int n=sz(graph);
+        int min_len=1e9;
+        queue<pair<int,pi>> q;
+        rep(i,0,n){
+            //node,mask,cost
+            q.push({i,{1<<i,0}});
+        }
+        vii vis(n,vi(1<<n,0));
+        while(!q.empty()){
+            auto it=q.front();
+            q.pop();
+            if(it.second.first==(1<<n)-1){
+                min_len=it.second.second;
+                break;
+            }
+            for(auto node:graph[it.first]){
+                int cur_mask=it.second.first|1<<node;
+                if(!vis[node][cur_mask]){
+                    q.push({node,{cur_mask,it.second.second+1}});
+                    vis[node][cur_mask]=1;
+                }
+            }
+        }
+        rt(min_len);
+    }
+};
