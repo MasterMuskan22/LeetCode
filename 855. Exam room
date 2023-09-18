@@ -1,0 +1,89 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class ExamRoom {
+public:
+    set<int> st;
+    int k;
+    ExamRoom(int n) {
+        k=n;
+    }
+    
+    int seat() {
+        int ind=-1;
+        int start=0,max_diff=-1e9;
+        //If no one is in room then zero
+        if(sz(st)==0){
+            st.insert(0);
+            ind=0;
+            rt(0);
+        }
+        //Check if the 0th position is occupied or not
+        if(st.find(0)==st.end()){
+            if(*st.begin()>max_diff){
+                max_diff=*st.begin();
+                ind=0;
+            }
+        }
+        //If already there are people sitting then find out the maximum distance between
+        //two people and place in the middle
+        for(auto end:st){
+            int dist=end-start;
+            if(dist/2>max_diff){
+                max_diff=dist/2;
+                ind=start+dist/2;
+            }
+            start=end;
+        }
+        //Check if anyone is there on last place or not
+        if(st.find(k-1)==st.end()){
+            int dist=k-1-start;
+            if(dist>max_diff){
+                max_diff=dist;
+                ind=k-1;
+            }
+        }
+        st.insert(ind);
+        rt(ind);
+    }
+    
+    void leave(int p) {
+        st.erase(p);
+    }
+};
+
+/**
+ * Your ExamRoom object will be instantiated and called as such:
+ * ExamRoom* obj = new ExamRoom(n);
+ * int param_1 = obj->seat();
+ * obj->leave(p);
+ */
