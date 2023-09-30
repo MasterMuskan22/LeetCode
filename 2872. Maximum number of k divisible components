@@ -1,0 +1,95 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    unordered_set<int> st;
+    int ans=0;
+    ll dfs(int node,int par_node,vi adj[],vi &val,int k,int &comp){
+        bool ch=1;
+        ll comp_sum=val[node];
+        st.insert(node);
+        for(auto it:adj[node]){
+            if(it!=par_node){
+                comp_sum+=dfs(it,node,adj,val,k,comp);
+                if(st.find(it)==st.end()) ans++;
+                else ans--;
+            }
+            st.insert(it);
+        }
+        if(comp_sum%k==0){
+            ans++;
+            if(ans&1) ch=0;
+            comp_sum=0;
+            comp++;
+        }
+        rt(comp_sum);
+    }
+    int maxKDivisibleComponents(int n, vector<vector<int>>& edges, vector<int>& values, int k) {
+        vector<int> adj[n];
+        for(auto it:edges){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+        int comp=-1;
+        vi vis(n,0);
+        vector<ll> v(n,0);
+        vis[0]=1;
+        v[0]=values[0];
+        rep(i,0,n){
+            for(auto it:adj[i]){
+                if(!vis[it]) v[it]+=values[it]+v[i];
+                else v[it]+=values[it];
+            }
+            vis[i]=1;
+        }
+        vll cnt(n,0);
+        rep(i,0,n){
+            if(v[i]%k==0) cnt[i]++;
+        }
+        ll res=0;
+        for(auto it:cnt){
+            if(it%k==0) res++;
+        }
+         // debug(v);
+        // rep(i,0,n){
+        //     for(auto it:adj[i]) cout<<i<<" "<<it.first<<" "<<it.second<<endl;
+        //     // cout<<endl;
+        // }
+        // cout<<endl;
+        ll tot_sum=dfs(0,-1,adj,values,k,comp);
+        if(tot_sum%k==0){
+            comp++;
+        }
+        rt(comp);
+    }
+};
