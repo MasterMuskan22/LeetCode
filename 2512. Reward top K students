@@ -1,0 +1,73 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    vector<int> topStudents(vector<string>& positive_feedback, vector<string>& negative_feedback, vector<string>& report, vector<int>& student_id, int k) {
+        map<string,ll> pos,neg;
+        for(auto it:positive_feedback) pos[it]++;
+        for(auto it:negative_feedback) neg[it]++;
+        map<ll,vll> mp;
+        rep(i,0,sz(report)){
+            int points=0;
+            string s="";
+            for(auto it:report[i]){
+                if(it!=' ') s+=it;
+                else{
+                    if(pos.find(s)!=pos.end()) points+=3;
+                    if(neg.find(s)!=neg.end()) points--;
+                    s="";
+                }
+            }
+            if(pos.find(s)!=pos.end()) points+=3;
+            if(neg.find(s)!=neg.end()) points--;
+            mp[points].pb(student_id[i]);
+        }
+        vi res;
+        vector<pair<ll,vll>> v;
+        for(auto it:mp) v.push_back(it);
+        sort(rbegin(v),rend(v));
+        for(auto it:v){
+            srt(it.second);
+            if(k>0){
+                for(auto i:it.second){
+                    k--;
+                    if(k<0) break;
+                    res.pb(i);
+                }
+                if(k<0) break;
+            }
+            else break;
+        }
+        rt(res);
+    }
+};
