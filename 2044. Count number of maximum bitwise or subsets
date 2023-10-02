@@ -1,0 +1,74 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int max_or=0;
+    void getSubs(int i,vi &nums,vi ans,vii &res,int cur_or){
+        if(i>=sz(nums)){
+            max_or=max(max_or,cur_or);
+            res.pb(ans);
+            return ;
+        }
+        ans.pb(nums[i]);
+        getSubs(i+1,nums,ans,res,cur_or|nums[i]);
+        ans.pop_back();
+        getSubs(i+1,nums,ans,res,cur_or|nums[i]);
+    }
+    int countMaxOrSubsets(vector<int>& nums) {
+        speed;
+        // vii subs;
+        // vi ans;
+        // int cur_or=0;
+        // getSubs(0,nums,ans,subs,cur_or);
+        // int cnt=0;
+        // for(auto it:subs){
+        //     int cur=0;
+        //     for(auto i:it) cur|=i;
+        //     if(cur==max_or) cnt++;
+        // }
+        // rt(cnt);
+        int max_or=0;
+        //Maximum OR of an array is the OR of all its elements
+        for(auto it:nums) max_or=max_or|it;
+        int cnt=0;
+        int n=sz(nums);
+        for(int i=1;i<(1<<n);i++){
+            int cur_or=0;
+            rep(j,0,n){
+                if(i&(1<<j)) cur_or|=nums[j];
+            }
+            if(cur_or==max_or) cnt++;
+        }
+        rt(cnt);
+    }
+};
