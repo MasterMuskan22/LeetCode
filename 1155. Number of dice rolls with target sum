@@ -1,0 +1,76 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    ll getNumRolls(int die,int face,int sum,vlll &dp){
+        if(die==0){
+            rt(sum==0);
+        }
+        if(sum<=0) rt(0);
+        if(dp[die][sum]!=-1) rt(dp[die][sum]);
+        ll cnt=0;
+        rep(i,1,face+1){
+            if(sum>=i) cnt+=getNumRolls(die-1,face,sum-i,dp);
+            cnt%=mod;
+        }
+        return dp[die][sum]=cnt;
+    }
+    int numRollsToTarget(int n, int k, int target) {
+        // vlll dp(n+1,vll(target+1,-1));
+        // return getNumRolls(n,k,target,dp);
+
+        // vlll dp(n+1,vll(target+1,0));
+        // dp[0][0]=1;
+        // rep(die,1,n+1){
+        //     rep(face,1,k+1){
+        //         rep(sum,1,target+1){
+        //             if(sum>=face) dp[die][sum]=(dp[die][sum]+dp[die-1][sum-face])%mod;
+        //         }
+        //     }
+        // }
+        // return dp[n][target];
+
+        vll prev(target+1,0);
+        prev[0]=1;
+        rep(die,1,n+1){
+            vll cur(target+1,0);
+            rep(face,1,k+1){
+                rep(sum,1,target+1){
+                    if(sum>=face) cur[sum]=(cur[sum]+prev[sum-face])%mod;
+                }
+            }
+            prev=cur;
+        }
+        rt(prev[target]%mod);
+    }
+};
