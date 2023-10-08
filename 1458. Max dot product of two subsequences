@@ -1,0 +1,70 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getMaxProduct(int i,int j,vi &nums1,vi &nums2,vii &dp){
+        if(i>=sz(nums1) || j>=sz(nums2)) rt(0);
+        if(dp[i][j]!=-1) rt(dp[i][j]);
+        int take=-1e9;
+        take=max(take,nums1[i]*nums2[j]+getMaxProduct(i+1,j+1,nums1,nums2,dp));
+        take=max(take,getMaxProduct(i+1,j,nums1,nums2,dp));
+        take=max(take,getMaxProduct(i,j+1,nums1,nums2,dp));
+        rt(dp[i][j]=take);
+    }
+    int maxDotProduct(vector<int>& nums1, vector<int>& nums2) {
+        int m=sz(nums1);
+        int n=sz(nums2);
+        // vii dp(m,vi(n,-1));
+        // int res=getMaxProduct(0,0,nums1,nums2,dp);
+        // if(res!=0) rt(res);
+        // int max_elm1=*max_element(all(nums1));
+        // int min_elm1=*min_element(all(nums1));
+        // int max_elm2=*max_element(all(nums2));
+        // int min_elm2=*min_element(all(nums2));
+        // res=max({max_elm1*min_elm2,min_elm1*max_elm2});
+        // rt(res);
+        vii dp(m+1,vi(n+1,0));
+        rep(i,1,m+1){
+            rep(j,1,n+1){
+                dp[i][j]=max({max(dp[i-1][j-1],0)+nums1[i-1]*nums2[j-1],dp[i-1][j],dp[i][j-1]});
+            }
+        }
+        if(dp[m][n]!=0) rt(dp[m][n]);
+        int max_elm1=*max_element(all(nums1));
+        int min_elm1=*min_element(all(nums1));
+        int max_elm2=*max_element(all(nums2));
+        int min_elm2=*min_element(all(nums2));
+        int res=max({max_elm1*min_elm2,min_elm1*max_elm2});
+        rt(res);
+    }
+};
