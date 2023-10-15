@@ -1,0 +1,64 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getNumWays(int i,int cnt,int steps,int n,vii &dp){
+        if(i<0 || i>=n) rt(0);
+        if(cnt==steps){
+            if(i==0) rt(1);
+            else rt(0);
+        }
+        if(dp[i][cnt]!=-1) rt(dp[i][cnt]);
+        int left=getNumWays(i-1,cnt+1,steps,n,dp)%mod;
+        int right=getNumWays(i+1,cnt+1,steps,n,dp)%mod;
+        int stay=getNumWays(i,cnt+1,steps,n,dp)%mod;
+        return dp[i][cnt]=((left+right)%mod+stay)%mod;
+    }
+    int numWays(int steps, int arrLen) {
+        // vii dp(501,vi(501,-1));
+        // int res=(getNumWays(0,0,steps,arrLen,dp))%mod;
+        // res%=mod;
+        // rt(res);
+        int ind=min(steps/2+1,arrLen);
+        vii dp(501,vi(501,0));
+        dp[0][0]=1;
+        rep(i,1,steps+1){
+            rep(j,0,ind){
+                dp[i][j]=dp[i-1][j]%mod;
+                if(j-1>=0) dp[i][j]=(dp[i][j]+dp[i-1][j-1])%mod;
+                if(j<ind) dp[i][j]=(dp[i][j]+dp[i-1][j+1])%mod;
+            }
+        }
+        rt(dp[steps][0]);
+    }
+};
