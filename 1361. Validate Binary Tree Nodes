@@ -1,0 +1,105 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class DisJointSet{
+public:
+    vector<int> rank;
+    vector<int> parent;
+    vector<int> size;
+    DisJointSet(int n){
+        rank.resize(n+1,0);
+        parent.resize(n+1);
+        size.resize(n+1);
+        for(int i=0;i<=n;i++){
+            parent[i]=i;
+            size[i]=1;
+        }
+    }
+    int findUltimateParent(int node){
+        if(node==parent[node]) return node;
+        return parent[node]=findUltimateParent(parent[node]);
+    }
+    void unionByRank(int node1,int node2){
+        int ultParentNode1=findUltimateParent(node1);
+        int ultParentNode2=findUltimateParent(node2);
+        if(ultParentNode1==ultParentNode2) return ;
+        if(rank[ultParentNode1]>rank[ultParentNode2]){
+            parent[ultParentNode2]=ultParentNode1;
+        }
+        else if(rank[ultParentNode1]<rank[ultParentNode2]){
+            parent[ultParentNode1]=ultParentNode2;
+        }
+        else{
+            parent[ultParentNode1]=ultParentNode2;
+            rank[ultParentNode1]++;
+        }
+    }
+    void unionBySize(int node1,int node2){
+        int ultParentNode1=findUltimateParent(node1);
+        int ultParentNode2=findUltimateParent(node2);
+        if(ultParentNode1==ultParentNode2) return ;
+        if(size[ultParentNode1]>size[ultParentNode2]){
+            parent[ultParentNode2]=ultParentNode1;
+            size[ultParentNode1]+=size[ultParentNode2];
+        }
+        else{
+            parent[ultParentNode1]=ultParentNode2;
+            size[ultParentNode2]+=size[ultParentNode1];
+        }
+    }
+    int getSize(int n){
+        return size[n];
+    }
+};
+class Solution {
+public:
+    bool validateBinaryTreeNodes(int n, vector<int>& leftChild, vector<int>& rightChild) {
+        DisJointSet ds(n);
+        vector<bool> vis(n,0);
+        rep(i,0,n){
+            if(leftChild[i]!=-1){
+                if(vis[leftChild[i]]) rt(0);
+                vis[leftChild[i]]=1;
+                if(ds.findUltimateParent(i)==ds.findUltimateParent(leftChild[i])) rt(0);
+                ds.unionBySize(i,leftChild[i]);
+            }
+            if(rightChild[i]!=-1){
+                if(vis[rightChild[i]]) rt(0);
+                vis[rightChild[i]]=1;
+                if(ds.findUltimateParent(i)==ds.findUltimateParent(rightChild[i])) rt(0);
+                ds.unionBySize(i,rightChild[i]);
+            }
+        }
+        int par=ds.findUltimateParent(0);
+        return ds.size[par]==n;
+    }
+};
