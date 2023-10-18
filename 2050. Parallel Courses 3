@@ -1,0 +1,65 @@
+/*Success is achieved by perseverance, devotion, thankfulness, and 
+hard work—all while wearing a charming grin.*/
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int minimumTime(int n, vector<vector<int>>& relations, vector<int>& time) {
+        vii adj(n);
+        vi indegree(n,0);
+        for(auto it:relations) adj[it[0]-1].push_back(it[1]-1); //0-based indexing
+        rep(i,0,n){
+            for(auto it:adj[i]) indegree[it]++;
+        }
+        vi total(n,0);
+        queue<int> q; 
+        rep(i,0,n){
+            if(indegree[i]==0){
+                q.push(i);
+                total[i]=time[i];
+            }
+        }
+        //Those whose indegree will be zero will be done first then others
+        while(!q.empty()){
+            auto node=q.front();
+            q.pop();
+            for(auto it:adj[node]){
+                //Next process will start after all the previous tasks have been completed and
+                //the maximum time of them will be added
+                total[it]=max(total[it],time[it]+total[node]);
+                indegree[it]--;
+                if(indegree[it]==0) q.push(it);
+            }
+        }
+        int min_time=*max_element(all(total));
+        rt(min_time);
+    }
+};
