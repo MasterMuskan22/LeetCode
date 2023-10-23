@@ -1,0 +1,44 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getMinSum(int i,vi &arr,int first_sum,int second_sum,vii &dp){
+        if(i>=sz(arr)){
+            rt(abs(first_sum-second_sum));
+        }
+        if(dp[i][first_sum]!=-1) rt(dp[i][first_sum]);
+        return dp[i][first_sum]=min(getMinSum(i+1,arr,first_sum+arr[i],second_sum,dp),getMinSum(i+1,arr,first_sum,second_sum+arr[i],dp)); 
+    }
+    int lastStoneWeightII(vector<int>& stones) {
+        vii dp(sz(stones),vi(1e4,-1));
+        return getMinSum(0,stones,0,0,dp);
+    }
+};
