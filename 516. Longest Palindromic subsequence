@@ -1,0 +1,68 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getMaxPal(int i,int j,string &s,string &t,vii &dp){
+        if(i>=sz(s) || j>=sz(s)) rt(0);
+        if(dp[i][j]!=-1) rt(dp[i][j]);
+        int same=0,notSame=0;
+        if(s[i]==t[j]) same=1+getMaxPal(i+1,j+1,s,t,dp);
+        else notSame=max(getMaxPal(i+1,j,s,t,dp),getMaxPal(i,j+1,s,t,dp));
+        return dp[i][j]=max(same,notSame);
+    }
+    int longestPalindromeSubseq(string s) {
+        int n=sz(s);
+        // string t=s;
+        // rev(t);
+        // vii dp(n,vi(n,-1));
+        // return getMaxPal(0,0,s,t,dp);
+        string t=s;
+        rev(t);
+        // vii dp(n+1,vi(n+1,0));
+        // rep(i,1,n+1){
+        //     rep(j,1,n+1){
+        //         if(s[i-1]==t[j-1]) dp[i][j]=1+dp[i-1][j-1];
+        //         else dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+        //     }
+        // }
+        // rt(dp[n][n]);
+        vi prev(n+1,0);
+        vi cur(n+1,0);
+        rep(i,1,n+1){
+            rep(j,1,n+1){
+                if(s[i-1]==t[j-1]) cur[j]=1+prev[j-1];
+                else cur[j]=max(cur[j-1],prev[j]);
+            }
+            prev=cur;
+        }
+        rt(prev[n]);
+    }
+};
