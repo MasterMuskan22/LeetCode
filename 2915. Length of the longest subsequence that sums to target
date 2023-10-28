@@ -1,0 +1,58 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getMaxLen(int i,vi &nums,int sum,vii &dp){
+        if(sum==0) rt(0);
+        if(i>=sz(nums) || sum<0) rt(-1e9);
+        if(dp[i][sum]!=-1) rt(dp[i][sum]);
+        int take=1+getMaxLen(i+1,nums,sum-nums[i],dp);
+        int notTake=getMaxLen(i+1,nums,sum,dp);
+        return dp[i][sum]=max(take,notTake);
+    }
+    int lengthOfLongestSubsequence(vector<int>& nums, int target) {
+        int n=sz(nums);
+        // vii dp(n+1,vi(target+1,-1));
+        // int res=getMaxLen(0,nums,target,dp);
+        // return res<=0?-1:res;
+        vii dp(n+1,vi(target+1,-1e9));
+        rep(i,0,n+1) dp[i][0]=0;
+        rep(i,1,n+1){
+            rep(j,1,target+1){
+                int take=-1e9;
+                if(j>=nums[i-1] && dp[i-1][j-nums[i-1]]!=-1e9) take=max(dp[i][j],1+dp[i-1][j-nums[i-1]]);
+                int notTake=dp[i-1][j];
+                dp[i][j]=max(take,notTake);
+            }
+        }
+        return dp[n][target]<=0?-1:dp[n][target];
+    }
+};
