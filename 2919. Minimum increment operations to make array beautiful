@@ -1,0 +1,55 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    ll getMinOps(int i,vi &nums,int k,vll &dp){
+        if(i>=sz(nums)) rt(0);
+        if(dp[i]!=-1) rt(dp[i]);
+        ll next1=0,next2=0,next3=0;
+        if(i+1<=sz(nums)) next1=max(0,k-nums[i])+getMinOps(i+1,nums,k,dp);
+        if(i+2<=sz(nums)) next2=max(0,k-nums[i+1])+getMinOps(i+2,nums,k,dp);
+        if(i+3<=sz(nums)) next3=max(0,k-nums[i+2])+getMinOps(i+3,nums,k,dp);
+        return dp[i]=min({next1,next2,next3});
+    }
+    long long minIncrementOperations(vector<int>& nums, int k) {
+        int n=sz(nums);
+        // vll dp(n,-1);
+        // return getMinOps(0,nums,k,dp);
+        vll dp(n+1,1e15);
+        dp[0]=0;
+        rep(i,1,n+1){
+            ll extra=max(0,k-nums[i-1]);
+            for(int j=i-1;j>=max(0,i-3);j--) dp[i]=min(dp[j],dp[i]);
+            dp[i]+=extra;
+        }
+        return min({dp[n],dp[n-1],dp[n-2]});
+    }
+};
