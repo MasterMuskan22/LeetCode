@@ -1,0 +1,62 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getTime(string &s){
+        int h=0,m=0;
+        h=(s[0]*10)-'0'+s[1]-'0';
+        m=(s[2]*10)-'0'+s[3]-'0';
+        return h*60+m;
+    }
+    vector<string> findHighAccessEmployees(vector<vector<string>>& access_times) {
+        vs res;
+        unordered_set<string> st;
+        unordered_map<string,vs> mp;
+        for(auto it:access_times) mp[it[0]].push_back(it[1]);
+        for(auto &it:mp) srt(it.second);
+        for(auto it:mp){
+            vs v=it.second;
+            rep(i,0,sz(v)){
+                int x=getTime(v[i]);
+                int cnt=0;
+                int j=i;
+                while(j<sz(v)){
+                    int y=getTime(v[j]);
+                    if(y-x<=59) cnt++,j++;
+                    else break;
+                }
+                if(cnt>=3) st.insert(it.first);
+            }
+        }
+        for(auto it:st) res.pb(it);
+        rt(res);
+    }
+};
