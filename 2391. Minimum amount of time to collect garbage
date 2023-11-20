@@ -1,0 +1,53 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int garbageCollection(vector<string>& garbage, vector<int>& travel) {
+        int n=sz(travel);
+        vi pref(n,0);
+        pref[0]=travel[0];
+        rep(i,1,n) pref[i]=pref[i-1]+travel[i];
+        int m=0,mc=0,g=0,gc=0,p=0,pc=0;
+        int res=0;
+        rep(i,0,sz(garbage)){
+            rep(j,0,sz(garbage[i])){
+                if(garbage[i][j]=='M') m=max(m,i),mc++;
+                if(garbage[i][j]=='G') g=max(g,i),gc++;
+                if(garbage[i][j]=='P') p=max(p,i),pc++;
+            }
+        }
+        res+=mc+pc+gc;
+        if(m>0) res+=pref[m-1];
+        if(g>0) res+=pref[g-1];
+        if(p>0) res+=pref[p-1];
+        rt(res);
+    }
+};
