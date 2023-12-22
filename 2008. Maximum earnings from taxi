@@ -1,0 +1,49 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    ll getMaxEarn(int i,int prev,vii &rides,vi &start,vll &dp){
+        if(i>=sz(rides)) rt(0);
+        if(dp[i]!=-1) rt(dp[i]);
+        ll take=0,notTake=0;
+        int ind=lower_bound(all(start),rides[i][1])-start.begin();
+        take=rides[i][1]-rides[i][0]+rides[i][2]+getMaxEarn(ind,rides[i][1],rides,start,dp);
+        notTake=getMaxEarn(i+1,prev,rides,start,dp);
+        return dp[i]=max(take,notTake);
+    }
+    long long maxTaxiEarnings(int n, vector<vector<int>>& rides) {
+        srt(rides);
+        vll dp(sz(rides)+1,-1);
+        vi start;
+        for(auto it:rides) start.pb(it[0]);
+        return getMaxEarn(0,-1,rides,start,dp);
+    }
+};
