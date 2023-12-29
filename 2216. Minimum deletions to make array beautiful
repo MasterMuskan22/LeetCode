@@ -1,0 +1,62 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int minDeletion(vector<int>& nums) {
+        // if(sz(nums)==1) rt(1);
+        // stack<pi> st;
+        // rep(i,0,sz(nums)){
+        //     if(st.empty()) st.push({nums[i],0});
+        //     else{
+        //         if(st.top().first==nums[i]){
+        //             if(st.top().second&1) st.push({nums[i],st.top().second+1});
+        //         }
+        //         else st.push({nums[i],st.top().second+1});
+        //     }
+        // }
+        // cout<<sz(st);
+        // if(sz(nums)==sz(st)){
+        //     if(sz(nums)&1) rt(1);
+        //     rt(0);
+        // }
+        // if(sz(st)&1) rt(sz(nums)-sz(st)+1);
+        // rt(sz(nums)-sz(st));
+        int prev=-1,min_del=0;
+        for(auto it:nums){
+            if(it==prev) min_del++;
+            else{
+                if(prev==-1) prev=it;
+                else prev=-1;
+            }
+        }
+        rt(min_del+(prev>=0));
+    }
+};
