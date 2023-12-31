@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int maxLengthBetweenEqualCharacters(string s) {
+        int max_len=0;
+        vector<pair<int,int>> v(26,{-1,-1});
+        for(int i=0;i<s.size();i++){
+            if(v[s[i]-'a'].first==-1) v[s[i]-'a'].first=i;
+            v[s[i]-'a'].second=i;
+        }
+        for(auto it:v){
+            max_len=max(max_len,it.second-it.first);
+        }
+        return max_len-1;
+    }
+};
