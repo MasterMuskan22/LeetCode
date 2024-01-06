@@ -1,0 +1,58 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        vii arr;
+        int n=sz(startTime);
+        vi temp;
+        rep(i,0,n){
+            vi v={startTime[i],endTime[i],profit[i]};
+            arr.pb(v);
+        }
+        srt(arr);
+        vi dp(n+1,0);
+        for(int i=n-1;i>=0;i--){
+            int ind=n;
+            int start=i,end=n-1;
+            while(start<=end){
+                int mid=start+(end-start)/2;
+                if(arr[mid][0]>=arr[i][1]){
+                    ind=mid;
+                    end=mid-1;
+                }
+                else start=mid+1;
+            }
+            dp[i]=max(dp[i+1],dp[ind]+arr[i][2]);
+        }
+        rt(dp[0]);
+    }
+};
