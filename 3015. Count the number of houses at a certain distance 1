@@ -1,0 +1,63 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    vector<int> countOfPairs(int n, int x, int y) {
+        vi adj[n+1];
+        rep(i,1,n){
+            adj[i].pb(i+1);
+            adj[i+1].pb(i);
+        }
+        adj[x].pb(y);
+        adj[y].pb(x);
+        vi res(n,0);
+        rep(i,1,n+1){
+            queue<int> q;
+            q.push(i);
+            vi cost(n+1,1e9);
+            cost[i]=0;
+            while(!q.empty()){
+                int node=q.front();
+                q.pop();
+                for(auto it:adj[node]){
+                    if(cost[it]>1+cost[node]){
+                        q.push(it);
+                        cost[it]=1+cost[node];
+                    }
+                }
+            }
+            rep(j,1,n+1){
+                if(cost[j]) res[cost[j]-1]++;
+            }
+        }
+        rt(res);
+    }
+};
