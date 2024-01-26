@@ -1,0 +1,49 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getPathsCount(int r,int c,int m,int n,int maxMoves,int moves,vector<vii> &dp){
+        if(r<0 || c<0 || r>=m || c>=n) rt(1);
+        if(maxMoves==moves) rt(0);
+        if(dp[moves][r][c]!=-1) rt(dp[moves][r][c]);
+        int count=0;
+        rep(i,0,4){
+            int nRow=r+dr[i];
+            int nCol=c+dc[i];
+            count=(count+getPathsCount(nRow,nCol,m,n,maxMoves,moves+1,dp))%mod;
+        }
+        return dp[moves][r][c]=count%mod;
+    }
+    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        vector<vii> dp(maxMove+1,vii(m+1,vi(n+1,-1)));
+        return getPathsCount(startRow,startColumn,m,n,maxMove,0,dp)%mod;
+    }
+};
