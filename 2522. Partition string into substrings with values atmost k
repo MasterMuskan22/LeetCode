@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int minimumPartition(string s, int k) {
+        int cnt=0;
+        string cur="";
+        for(int j=0;j<s.size();j++){
+            cur+=s[j];
+            if(stoll(cur)>k){
+                cnt++;
+                cur=s[j];
+                if(stoi(cur)>k) return -1;
+            }
+        }
+        return cnt+1;
+    }
+};
