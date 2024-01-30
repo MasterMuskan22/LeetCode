@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int maxTurbulenceSize(vector<int>& arr) {
+        auto getMaxSize1=[&](int i,vector<int> &arr){
+            int max_size=1;
+            int cur_cnt=1;
+            for(int j=i;j<arr.size()-1;j++){
+                if(j&1){
+                    if(arr[j]>arr[j+1]){
+                        cur_cnt++;
+                        max_size=max(max_size,cur_cnt);
+                    }
+                    else cur_cnt=1;
+                }
+                else{
+                    if(arr[j]<arr[j+1]){
+                        cur_cnt++;
+                        max_size=max(max_size,cur_cnt);
+                    }
+                    else cur_cnt=1;
+                }
+            }
+            return max_size;
+        };
+        auto getMaxSize2=[&](int i,vector<int> &arr){
+            int max_size=1;
+            int cur_cnt=1;
+            for(int j=i;j<arr.size()-1;j++){
+                if(!(j&1)){
+                    if(arr[j]>arr[j+1]){
+                        cur_cnt++;
+                        max_size=max(max_size,cur_cnt);
+                    }
+                    else cur_cnt=1;
+                }
+                else{
+                    if(arr[j]<arr[j+1]){
+                        cur_cnt++;
+                        max_size=max(max_size,cur_cnt);
+                    }
+                    else cur_cnt=1;
+                }
+            }
+            return max_size;
+        };
+        if(arr.size()==2){
+            if(arr[0]!=arr[1]) return 2;
+        }
+        int max_size=max(getMaxSize1(0,arr),getMaxSize2(0,arr));
+        return max_size;
+    }
+};
