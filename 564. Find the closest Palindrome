@@ -1,0 +1,64 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    string nearestPalindromic(string n) {
+        auto makePal=[&](string s){
+            int i=0,j=sz(s)-1;
+            while(i<j) s[j--]=s[i++];
+            return s;
+        };
+        ll num=stoll(n);
+        int x=sz(n);
+        ll mid=(ll)(pow(10,x/2));
+        string same=makePal(n);
+        string res=same;
+        ll val=stoll(same);
+        ll diff0=abs(val-num);
+        ll min_diff=diff0;
+        string cur1=to_string((num/mid)*mid-1);
+        string small=makePal(cur1);
+        ll val1=stoll(small);
+        ll diff1=abs(num-val1);
+        string cur2=to_string((num/mid+1)*mid);
+        string large=makePal(cur2);
+        ll val2=stoll(large);
+        ll diff2=abs(val2-num);
+        if(diff0>=diff1 || diff0==0){
+            res=small;
+            min_diff=diff1;
+        }
+        if(min_diff>diff2){
+            res=large;
+        }
+        rt(res);
+    }
+};
