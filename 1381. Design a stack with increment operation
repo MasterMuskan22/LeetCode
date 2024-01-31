@@ -1,0 +1,38 @@
+class CustomStack {
+public:
+    deque<int> dq;
+    int n=0;
+    CustomStack(int maxSize) {
+        n=maxSize;
+    }
+    
+    void push(int x) {
+        if(dq.size()<n) dq.push_front(x);
+    }
+    
+    int pop() {
+        if(dq.empty()) return -1;
+        int res=dq.front();
+        dq.pop_front();
+        return res;
+    }
+    
+    void increment(int k, int val) {
+        if(dq.empty()) return ;
+        int ind=min(k,(int)dq.size());
+        vector<int> arr;
+        while(ind--){
+            arr.push_back(dq.back()+val);
+            dq.pop_back();
+        }
+        for(int i=arr.size()-1;i>=0;i--) dq.push_back(arr[i]);
+    }
+};
+
+/**
+ * Your CustomStack object will be instantiated and called as such:
+ * CustomStack* obj = new CustomStack(maxSize);
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * obj->increment(k,val);
+ */
