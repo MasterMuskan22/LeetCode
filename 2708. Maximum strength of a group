@@ -1,0 +1,16 @@
+class Solution {
+public:
+    void getMaxStrength(int j,int cnt,vector<int> &nums,long long cur,long long &max_strength){
+        if(j==nums.size()){
+            if(cnt) max_strength=max(max_strength,cur);
+            return ;
+        }
+        getMaxStrength(j+1,cnt+1,nums,cur*nums[j],max_strength);
+        getMaxStrength(j+1,cnt,nums,cur,max_strength);
+    }
+    long long maxStrength(vector<int>& nums) {
+        long long max_strength=-1e18;
+        getMaxStrength(0,0,nums,1,max_strength);
+        return max_strength;
+    }
+};
