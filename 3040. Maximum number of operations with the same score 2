@@ -1,0 +1,52 @@
+#define ll long long
+#define lli long long int
+#define vi vector<int>
+#define vll vector<ll>
+#define vii vector<vector<int>>
+#define vlll vector<vector<ll>>
+#define vs vector<string> 
+#define vss vector<vector<string>>
+#define vc vector<char>
+#define vcc vector<vector<char>>
+#define pb(x) push_back(x)
+#define rep(i,a,b) for(int i=a;i<b;i++)
+#define srt(v) sort(begin(v),end(v));
+#define srtr(v) sort(rbegin(v),rend(v))
+#define rev(v) reverse(begin(v),end(v))
+#define all(v) (v).begin(),(v).end()
+#define pi pair<int,int>
+#define pll pair<ll,ll>
+#define umap unordered_map<int,int>
+#define umapl unordered_map<ll,ll>
+#define rt(v) return v
+#define sz(v) size(v)
+#define mpdebug(mp) for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+#define debug(v) for(auto it:v) cout<<it<<" ";
+int dr[4]={-1,0,1,0};
+int dc[4]={0,1,0,-1};
+int dr1[8]={-1,-1,0,1,1,1,0,-1};
+int dc1[8]={0,1,1,1,0,-1,-1,-1};
+int mod=1e9+7;
+#define speed ios_base::sync_with_stdio(false); cin.tie(NULL); cout.precision(20);
+class Solution {
+public:
+    int getMaxCnt(int i,int j,vi &nums,int sum,vii &dp){
+        if(i>=j) rt(0);
+        if(dp[i][j]!=-1) rt(dp[i][j]);
+        int same1=0,same2=0,same3=0;
+        if(nums[i]+nums[i+1]==sum) same1=1+getMaxCnt(i+2,j,nums,sum,dp);
+        if(nums[i]+nums[j]==sum) same2=1+getMaxCnt(i+1,j-1,nums,sum,dp);
+        if(nums[j]+nums[j-1]==sum) same3=1+getMaxCnt(i,j-2,nums,sum,dp);
+        return dp[i][j]=max({same1,same2,same3});
+    }
+    int maxOperations(vector<int>& nums) {
+        int n=sz(nums);
+        vii dp(n,vi(n,-1));
+        int res=0;
+        int sum1=nums[0]+nums[1];
+        int sum2=nums[0]+nums[n-1];
+        int sum3=nums[n-1]+nums[n-2];
+        res=max({getMaxCnt(2,n-1,nums,sum1,dp),getMaxCnt(1,n-2,nums,sum2,dp),getMaxCnt(0,n-3,nums,sum3,dp)})+1;
+        rt(res);
+    }
+};
